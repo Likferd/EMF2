@@ -34,17 +34,20 @@ k = 2 * pi * (f * 10^9) * sqrt(er) / c;
 lambda = c / (sqrt(er)* (f * 10^9)) * 10^2;
 
 % dielectric attenuation alpha_d, Np/m
-alpha_d = k * loss_tangent / 2
+alpha_d = k * loss_tangent / 2;
 
 % conductor attenuation alpha_c,  Np/m
 % mistakes occur here need to be fixed
-A = 1 + (2 * W * 10) / (b - t) + (1 / pi) * (b + 1)/(b - 1) * log((2 * b - t) / t);
+A = 1 + (2 * W * 10^(-2) ) / (b * 10^(-2) - t * 10^(-3)) + (1 / pi) * (b * 10^(-2) + 1)/(b * 10^(-2)- 1) * log(((2 * b * 10^(-2) - t * 10^(-3))) / t * 10^(-3));
 B = 1 + (b / (0.5 * W + 0.7 * t)) * (0.5 + 0.414 * t / W + (1 / (2 * pi) * log(4 * pi * W / t)));
 if sqrt(er) * Z0 < 120
     alpha_c = (2.7 * 10^(-3) * R_s * er * Z0 * A) / (30 * pi * (b - t));
 elseif sqrt(er) * Z0 > 120
     alpha_c = 0.16 * R_s * B / (Z0 * b);
 end
+
+A
+alpha_c
 
 
 
