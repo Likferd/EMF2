@@ -37,7 +37,7 @@ lambda = c / (sqrt(er)* (f * 10^9)) * 10^2;
 alpha_d = k * loss_tangent / 2
 
 % conductor attenuation alpha_c,  Np/m
-%mistakes occur here need to be fixed
+% mistakes occur here need to be fixed
 A = 1 + (2 * W * 10) / (b - t) + (1 / pi) * (b + 1)/(b - 1) * log((2 * b - t) / t);
 B = 1 + (b / (0.5 * W + 0.7 * t)) * (0.5 + 0.414 * t / W + (1 / (2 * pi) * log(4 * pi * W / t)));
 if sqrt(er) * Z0 < 120
