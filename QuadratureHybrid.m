@@ -1,26 +1,28 @@
-%
+%Reference:
 %http://www.aps.anl.gov/asd/people/nassiri/USPAS2003/Lecture10.pdf
+
 classdef QuadratureHybrid
     methods (Access = public, Static)
-        
-        function [width] = calculateWidth(characteristicImpedance, substrateThickness, fabricationType)
+        % relative_permittivity: F/m
+        % characteristicImpedance: Ohms
+        % substrateThickness: meters
+        % coupling_ratio: dB
+        % fabricationType: 'Micro', 'Coax', 'Strip'
+        function [width_in, width1, width2] = calculateWidth(coupling_ratio, relative_permittivity, characteristicImpedance, substrateThickness, fabricationType)
+            %Give
+            S = [0 (-1*1i/sqrt(2)) (-1/sqrt(2)) 0; (-1*1i/sqrt(2)) 0 0 (-1/sqrt(2)); (-1/sqrt(2)) 0 0 (-1*1i/sqrt(2)); 0 (-1/sqrt(2)) (-1*1i/sqrt(2)) 0];
+            Z = s2z4(S);
             switch fabricationType
                 case 'Micro'
-                    %test parameters
-                    lambda_0 = 30;
-                    epsilon_r = 2.2;
-                    
-                    %Give
-                    d = 0.158*10^(-2);
-                    S = [0 (-1*1i/sqrt(2)) (-1/sqrt(2)) 0; (-1*1i/sqrt(2)) 0 0 (-1/sqrt(2)); (-1/sqrt(2)) 0 0 (-1*1i/sqrt(2)); 0 (-1/sqrt(2)) (-1*1i/sqrt(2)) 0];
-                    Z = s2z4(S);
-
-                    %find coupling
-                    C = 10*log(1/(1-(Z(0+1,1+1)/characteristicImpedance)^2));
-                    lambda = lambda_0/sqrt(epsilon_r);
-
-                    %W for microstrip
-                    width = substrateThickness*WDratio_g2(characteristicImpedance,epsilon_r);
+                    %find impedance01 using given coupling ratio
+                    %Coupling Ratio:  C = 10*log(1/(1-(Z(0+1,1+1)/characteristicImpedance)^2));
+                    impedance01 = characteristicImpedance*sqrt(1-(1/(10^(coupling_ratio/10))));
+                    %find impedance02
+                    impedance02 = impedance01/sqrt(1-(impedance01/characteristicImpedance)^2);
+                    %Three widths associated with quadrature hybrid for microstrip
+                    width1 = substrateThickness*WDratio_g2(impedance01, relative_permittivity);
+                    width2 = substrateThickness*WDratio_g2(impedance02, relative_permittivity);
+                    width_in = substrateThickness*WDratio_g2(characteristicImpedance,relative_permittivity);
                 case 'Strip'
                     %TODO
                 case 'Coax'
@@ -32,6 +34,7 @@ classdef QuadratureHybrid
             switch fabricationType
                 case 'Micro'
                     %TODO
+                    length = 1;
                 case 'Strip'
                     %TODO
                 case 'Coax'
@@ -62,15 +65,18 @@ classdef QuadratureHybrid
             end
         end
         
-        function [guideWav] = calculateGuideWavelength(fabricationType)
+        % relative_permittivity: F/m
+        % frequency: Hz
+        function [lambda] = calculateGuideWavelength(relative_permittivity,frequency,fabricationType)
             switch fabricationType
                 case 'Micro'
-                    %TODO
+                    lambda_0 = 3*10^8/frequency;
+                    lambda = lambda_0/sqrt(relative_permittivity);
                 case 'Strip'
                     %TODO
                 case 'Coax'
                     %TODO
             end
         end
-    end
-end
+    end%end methods
+end%end class

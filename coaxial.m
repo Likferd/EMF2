@@ -21,6 +21,7 @@ classdef coaxial
          beta = (2*pi*frequency)*sqrt(permeability*permittivity);
          w = 2*pi/beta;
      end
+     
      %Propagation Constant
      function [c] = getPropagationConstant(frequency, permeability, permittivity, conductivity)
          %We will have a complex value
