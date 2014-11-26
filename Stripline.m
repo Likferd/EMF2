@@ -53,6 +53,6 @@ alpha_dB = 20 * log10(exp(alpha));
 % phase constant, rad/m
 beta = sqrt(er) * (2 * pi * f) / c;
 
-% propagation, gamma
+% propagation constant, gamma
 gamma = alpha + j * beta
 
