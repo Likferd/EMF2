@@ -37,17 +37,22 @@ lambda = c / (sqrt(er)* (f * 10^9)) * 10^2;
 alpha_d = k * loss_tangent / 2;
 
 % conductor attenuation alpha_c,  Np/m
-% mistakes occur here need to be fixed
-A = 1 + (2 * W * 10^(-2) ) / (b * 10^(-2) - t * 10^(-3)) + (1 / pi) * (b * 10^(-2) + 1)/(b * 10^(-2)- 1) * log(((2 * b * 10^(-2) - t * 10^(-3))) / t * 10^(-3));
-B = 1 + (b / (0.5 * W + 0.7 * t)) * (0.5 + 0.414 * t / W + (1 / (2 * pi) * log(4 * pi * W / t)));
+A = 1 + (2 * W * 10^(-2) ) / (b * 10^(-2) - t * 10^(-3)) + (1 / pi) * (b * 10^(-2) + t * 10^(-3))/(b * 10^(-2)- t * 10^(-3)) * log(((2 * b * 10^(-2) - t * 10^(-3))) / (t * 10^(-3)));
+B = 1 + ((b * 10^(-2)) / (0.5 * (W * 10^(-2)) + 0.7 * (t * 10^(-3)))) * (0.5 + 0.414 * (t * 10^(-3)) / (W * 10^(-2)) + (1 / (2 * pi) * log(4 * pi * (W * 10^(-2)) / (t * 10^(-3)))));
 if sqrt(er) * Z0 < 120
-    alpha_c = (2.7 * 10^(-3) * R_s * er * Z0 * A) / (30 * pi * (b - t));
+    alpha_c = (2.7 * 10^(-3) * R_s * er * Z0 * A) / (30 * pi * ((b * 10^(-2) - (t * 10^(-3)))));
 elseif sqrt(er) * Z0 > 120
-    alpha_c = 0.16 * R_s * B / (Z0 * b);
+    alpha_c = 0.16 * R_s * B / (Z0 * (b * 10^(-2)));
 end
 
-A
-alpha_c
+% attenuation alpha, Np/m
+alpha = alpha_d + alpha_c;
+% attenuation alpha, dB/m
+alpha_dB = 20 * log10(exp(alpha));
 
+% phase constant, rad/m
+beta = sqrt(er) * (2 * pi * f) / c;
 
+% propagation, gamma
+gamma = alpha + j * beta
 
