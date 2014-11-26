@@ -8,17 +8,17 @@ classdef QuadratureHybrid
         % substrateThickness: meters
         % coupling_ratio: dB
         % fabricationType: 'Micro', 'Coax', 'Strip'
-        function [width_in, width1, width2] = calculateWidth(coupling_ratio, relative_permittivity, characteristicImpedance, substrateThickness, fabricationType)
+        function [width_in, width1, width2] = calculateWidth(coupling_ratio, relative_permittivity, relative_permeability, characteristicImpedance, substrateThickness, fabricationType)
             %Give
             S = [0 (-1*1i/sqrt(2)) (-1/sqrt(2)) 0; (-1*1i/sqrt(2)) 0 0 (-1/sqrt(2)); (-1/sqrt(2)) 0 0 (-1*1i/sqrt(2)); 0 (-1/sqrt(2)) (-1*1i/sqrt(2)) 0];
             Z = s2z4(S);
+            %find impedance01 using given coupling ratio
+            %Coupling Ratio:  C = 10*log(1/(1-(Z(0+1,1+1)/characteristicImpedance)^2));
+            impedance01 = characteristicImpedance*sqrt(1-(1/(10^(coupling_ratio/10))));
+            %find impedance02
+            impedance02 = impedance01/sqrt(1-(impedance01/characteristicImpedance)^2);
             switch fabricationType
                 case 'Micro'
-                    %find impedance01 using given coupling ratio
-                    %Coupling Ratio:  C = 10*log(1/(1-(Z(0+1,1+1)/characteristicImpedance)^2));
-                    impedance01 = characteristicImpedance*sqrt(1-(1/(10^(coupling_ratio/10))));
-                    %find impedance02
-                    impedance02 = impedance01/sqrt(1-(impedance01/characteristicImpedance)^2);
                     %Three widths associated with quadrature hybrid for microstrip
                     width1 = substrateThickness*WDratio_g2(impedance01, relative_permittivity);
                     width2 = substrateThickness*WDratio_g2(impedance02, relative_permittivity);
@@ -27,6 +27,9 @@ classdef QuadratureHybrid
                     %TODO
                 case 'Coax'
                     %TODO
+                    width1 = coaxial.calculateWidth(substrateThickness, relative_permittivity, relative_permeability, impedance01);
+                    width2 = coaxial.calculateWidth(substrateThickness, relative_permittivity, relative_permeability, impedance02);           
+                    width_in = coaxial.calculateWidth(substrateThickness, relative_permittivity, relative_permeability, characteristicImpedance);            
             end%end switch statement
         end%end getWidth function
         
@@ -43,7 +46,6 @@ classdef QuadratureHybrid
         end
         
         function [impedance] = calculateImpedance(fabricationType)
-            %TODO
             switch fabricationType
                 case 'Micro'
                     %TODO
