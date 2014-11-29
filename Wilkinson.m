@@ -48,33 +48,47 @@ classdef Wilkinson
           R3 = Z0/K;
       end
       
-      function [width12] = getBranchWidth12(Z02,substratethickness,er,greater_than_2,fabricationtype)
+      function [width12,effectivewidth] = getBranchWidth12(Z02,substratethickness,er,greater_than_2,transmissionlinetype)
           
         %enter a 0 if the Wdratio should not be greater than 2
         %enter a 1 if the Wdratio should be greater than 2
-        %for microstrip
-        switch fabricationtype
+        %enter 'Micro' for microstrip and 'Strip' for Stripline
+        switch transmissionlinetype
             case 'Micro'
                 if greater_than_2 ==1
                     B2 = (377*pi)/(2*Z02*sqrt(er));
                     Wdratio2 = (2/pi)*(B2 - 1 - log(2*B2 -1) + ((er-1)/(2*er))*(log(B2-1)+.39-(.61/er)));
                     width12 = Wdratio2*substratethickness;
+                    effectivewidth = [];
                 end
         
                 if greater_than_2 ==0
                     A2 = Z02/60 * sqrt((er+1)/2) + ((er-1)/(er+1))*(.23+(.11/er));
                     Wdratio2 = 8*exp(A2) / (exp(2*A2)-2);
                     width12 = Wdratio2*substratethickness;
-            
+                    effectivewidth = [];
+                end
+            case 'Strip'
+                x = ((30*pi)/(sqrt(er)*Z02))-.441;
+                if sqrt(er)*Z02 < 120
+                    width12 = x*substratethickness;
+                else
+                    width12 = (0.85 - sqrt(.6-x))*substratethickness;
+                end
+                
+                if width12/substratethickness > .35
+                    effectivewidth = width12;
+                else
+                    effectivewidth = ((width12/substratethickness) - (.35 - width12/substratethickness)^2)*substratethickness;
                 end
         end
       end
 
-        function [width13] = getBranchWidth13(Z03,substratethickness,er,greater_than_2,fabricationtype)
+        function [width13,effectivewidth] = getBranchWidth13(Z03,substratethickness,er,greater_than_2,fabricationtype)
           
         %enter a 0 if the Wdratio should not be greater than 2
         %enter a 1 if the Wdratio should be greater than 2
-        %for microstrip
+        %enter 'Micro' for microstrip and 'Strip' for Stripline
         
         switch fabricationtype
             case 'Micro'
@@ -88,7 +102,21 @@ classdef Wilkinson
                     A3 = Z03/60 * sqrt((er+1)/2) + ((er-1)/(er+1))*(.23+(.11/er));
                     Wdratio3 = 8*exp(A3) / (exp(2*A3)-2);
                     width13 = Wdratio3*substratethickness;
-               end
+                end
+           case 'Strip'
+               
+                x = ((30*pi)/(sqrt(er)*Z03))-.441;
+                if sqrt(er)*Z03 < 120
+                    width13 = x*substratethickness;
+                else
+                    width13 = (0.85 - sqrt(.6-x))*substratethickness;
+                end
+                
+                if width13/substratethickness > .35
+                    effectivewidth = width13;
+                else
+                    effectivewidth = ((width13/substratethickness) - (.35 - width13/substratethickness)^2)*substratethickness;
+                end
         end
       end
   end  
