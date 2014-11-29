@@ -16,21 +16,23 @@
 %   Propagation Constant
 %   Guide wavelength
 classdef coaxial
+properties (Access = private)
+    epsilon_0 = 8.85418782*10-12;
+    mu_0 = 1.25663706*10-6;
+end
  methods (Access = public, Static)
      %Length
      
      %Guide Wavelength
      function [w] = getGuideWavelength(frequency, relative_permeability, relative_permittivity)
-         epsilon_0 = 8.85418782*10-12;
-         mu_0 = 1.25663706*10-6;
-         beta = (2*pi*frequency)*sqrt(epsilon_0*relative_permeability*mu_0*relative_permittivity);
+         beta = (2*pi*frequency)*sqrt(coaxial.epsilon_0*relative_permeability*coaxial.mu_0*relative_permittivity);
          w = 2*pi/beta;
      end
      
      %Propagation Constant
-     function [c] = getPropagationConstant(frequency, permeability, permittivity, conductivity)
+     function [c] = getPropagationConstant(frequency, relative_permeability, relative_permittivity, conductivity)
          %We will have a complex value
-         c = 1i*(2*pi*frequency)*sqrt(permeability*permittivity)*sqrt(1-1i*(conductivity/(2*pi*frequency*permittivity)));
+         c = 1i*(2*pi*frequency)*sqrt(coaxial.epsilon_0*relative_permeability*coaxial.mu_0*relative_permittivity)*sqrt(1-1i*(conductivity/(2*pi*frequency*permittivity)));
      end
      
      %Impedance
@@ -44,9 +46,7 @@ classdef coaxial
      %conductor radius = metal thickness, meters
      function [width] = calculateWidth(substrateThickness,relative_permittivity, relative_permeability, characteristicImpedance)
          %TODO, relate to impedance
-         epsilon_0 = 8.85418782*10^-12;
-         mu_0 = 1.25663706*10^(-6);
-         eta = sqrt((mu_0*relative_permeability)/(epsilon_0*relative_permittivity));
+         eta = sqrt((coaxial.mu_0*relative_permeability)/(coaxial.epsilon_0*relative_permittivity));
          width = 2*substrateThickness/(exp(2*pi*characteristicImpedance/eta)+1);
      end
      

@@ -82,14 +82,14 @@ classdef QuadratureHybrid
             impedance02 = impedance01/sqrt(1-(impedance01/characteristicImpedance)^2);
         end
         
-        function [propConst] = calculatePropagationConstant(relative_permittivity, frequency, fabricationType)
+        function [propConst] = calculatePropagationConstant(conductivity, relative_permittivity, relative_permeability, frequency, fabricationType)
             switch fabricationType
                 case 'Micro'
-                    %TODO
+                    propConst = microstripclass.getPropConstants(relative_permittivity,2*pi*frequency,relative_permeability,conductivity,WDratio,Z0);
                 case 'Strip'
                     propConst = getStriplinePropagationConstant(relative_permittivity, frequency);
                 case 'Coax'
-                    
+                    propConst = coaxial.getPropagationConstant(frequency, relative_permeability, relative_permittivity, conductivity);
             end
         end
         
@@ -103,7 +103,7 @@ classdef QuadratureHybrid
                 case 'Strip'
                     lambda = getStriplineGuideWavelength(relative_permittivity, frequency);
                 case 'Coax'
-                    getGuideWavelength(frequency, relative_permeability, relative_permittivity);
+                    lambda = coaxial.getGuideWavelength(frequency, relative_permeability, relative_permittivity);
             end
         end
     end%end methods
