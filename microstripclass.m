@@ -46,7 +46,7 @@ classdef microstripclass
         
         function[l,guidewavelength] = getLength(Beta,phi)
             % phi is desired phase shift, in degrees
-            %Bets is the complex part of the propagation constant gamma
+            %Beta is the complex part of the propagation constant gamma
             l = phi*(pi/180)/Beta; 
             guidewavelength = 2*pi/Beta;
         end

@@ -54,5 +54,5 @@ alpha_dB = 20 * log10(exp(alpha));
 beta = sqrt(er) * (2 * pi * f) / c;
 
 % propagation constant, gamma
-gamma = alpha + j * beta
+gamma = alpha + j * beta;
 

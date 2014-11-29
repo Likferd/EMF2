@@ -20,8 +20,10 @@ classdef coaxial
      %Length
      
      %Guide Wavelength
-     function [w] = getGuideWavelength(frequency, permeability, permittivity)
-         beta = (2*pi*frequency)*sqrt(permeability*permittivity);
+     function [w] = getGuideWavelength(frequency, relative_permeability, relative_permittivity)
+         epsilon_0 = 8.85418782*10-12;
+         mu_0 = 1.25663706*10-6;
+         beta = (2*pi*frequency)*sqrt(epsilon_0*relative_permeability*mu_0*relative_permittivity);
          w = 2*pi/beta;
      end
      

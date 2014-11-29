@@ -22,20 +22,6 @@ classdef QuadratureHybrid
             % wavelength, cm
             lambda = c / (sqrt(relative_permittivity)* (frequency * 10^9)) * 10^2;
         end
-        
-        function [gamma] = getStriplinePropagationConstant(relative_permittivity, frequency)
-            % attenuation alpha, Np/m
-            alpha = alpha_d + alpha_c;
-            
-            % attenuation alpha, dB/m
-            alpha_dB = 20 * log10(exp(alpha));
-
-            % phase constant, rad/m
-            beta = sqrt(relative_permittivity) * (2 * pi * frequency) / c;
-
-            % propagation constant, gamma
-            gamma = alpha + 1i * beta;
-        end
     end
     
     methods (Access = public, Static)
@@ -73,7 +59,7 @@ classdef QuadratureHybrid
             length = calculateGuideWavelength(relative_permittivity,frequency,fabricationType)/4;
         end
         
-        function [impedance_in, impedance01, impedance02] = calculateImpedance(coupling_ratio, characteristicImpedance)
+        function [impedance_in, impedance01, impedance02] = calculateImpedance(characteristicImpedance)
             impedance_in = characteristicImpedance;
             %find impedance01 using given coupling ratio
             %Coupling Ratio:  C = 10*log(1/(1-(Z(0+1,1+1)/characteristicImpedance)^2));
@@ -82,20 +68,20 @@ classdef QuadratureHybrid
             impedance02 = impedance01/sqrt(1-(impedance01/characteristicImpedance)^2);
         end
         
-        function [propConst] = calculatePropagationConstant(relative_permittivity, frequency, fabricationType)
+        function [propConst] = calculatePropagationConstant(fabricationType)
             switch fabricationType
                 case 'Micro'
                     %TODO
                 case 'Strip'
-                    propConst = getStriplinePropagationConstant(relative_permittivity, frequency);
+                    %TODO
                 case 'Coax'
-                    
+                    %TODO
             end
         end
         
         % relative_permittivity: F/m
         % frequency: Hz
-        function [lambda] = calculateGuideWavelength(relative_permittivity,relative_permeability,frequency,fabricationType)
+        function [lambda] = calculateGuideWavelength(relative_permittivity,frequency,fabricationType)
             switch fabricationType
                 case 'Micro'
                     lambda_0 = 3*10^8/frequency;
@@ -103,7 +89,7 @@ classdef QuadratureHybrid
                 case 'Strip'
                     lambda = getStriplineGuideWavelength(relative_permittivity, frequency);
                 case 'Coax'
-                    getGuideWavelength(frequency, relative_permeability, relative_permittivity);
+                    %TODO
             end
         end
     end%end methods
