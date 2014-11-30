@@ -69,6 +69,10 @@ set(handles.text8, 'Visible', 'off');
 set(handles.text9, 'Visible', 'off');
 set(handles.text10, 'Visible', 'off');
 set(handles.text11, 'Visible', 'off');
+set(handles.text19, 'Visible', 'off');
+set(handles.text20, 'Visible', 'off');
+set(handles.edit8, 'Visible', 'off');
+set(handles.edit9, 'Visible', 'off');
 set(handles.pushbutton4, 'Visible', 'off');
 set(handles.edit1, 'Visible', 'off');
 set(handles.edit2, 'Visible', 'off');
@@ -76,6 +80,7 @@ set(handles.edit4, 'Visible', 'off');
 set(handles.edit5, 'Visible', 'off');
 set(handles.edit6, 'Visible', 'off');
 set(handles.edit7, 'Visible', 'off');
+
 
 %Make Output not visible
 set(handles.text14, 'Visible', 'off');
@@ -200,8 +205,7 @@ function popupmenu3_Callback(hObject, eventdata, handles)
 % hObject    handle to popupmenu3 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-desired_output = get(hObject, 'Value');
-switch desired_output
+switch get(hObject, 'Value')
     case 1
         handles.desired_output = 'Width';
     case 2
@@ -220,6 +224,10 @@ set(handles.text8, 'Visible', 'on');
 set(handles.text9, 'Visible', 'on');
 set(handles.text10, 'Visible', 'on');
 set(handles.text11, 'Visible', 'on');
+set(handles.text19, 'Visible', 'on');
+set(handles.text20, 'Visible', 'on');
+set(handles.edit8, 'Visible', 'on');
+set(handles.edit9, 'Visible', 'on');
 set(handles.pushbutton4, 'Visible', 'on');
 set(handles.edit1, 'Visible', 'on');
 set(handles.edit2, 'Visible', 'on');
@@ -262,6 +270,10 @@ set(handles.text8, 'Visible', 'off');
 set(handles.text9, 'Visible', 'off');
 set(handles.text10, 'Visible', 'off');
 set(handles.text11, 'Visible', 'off');
+set(handles.text19, 'Visible', 'off');
+set(handles.text20, 'Visible', 'off');
+set(handles.edit8, 'Visible', 'off');
+set(handles.edit9, 'Visible', 'off');
 set(handles.pushbutton4, 'Visible', 'off');
 set(handles.pushbutton4, 'Enable', 'on');
 set(handles.edit1, 'Visible', 'off');
@@ -470,6 +482,12 @@ try
 catch
     handles.input.metal_thickness = 0;
 end
+relative_permittivity = get(handles.edit8, 'String');
+try
+    handles.input.relative_permittivity = str2double(relative_permittivity);
+catch
+    handles.input.relative_permittivity = 0;
+end
 metal_conductivity = get(handles.edit5, 'String');
 try
     handles.input.metal_conductivity = str2double(metal_conductivity);
@@ -488,10 +506,16 @@ try
 catch
     handles.input.coupling_ratio = 0;
 end
+relative_permeability = get(handles.edit9, 'String');
+try
+    handles.input.relative_permeability = str2double(relative_permeability);
+catch
+    handles.input.relative_permeability = 0;
+end
 set(hObject, 'Enable', 'off');
 drawnow();
 %Calculate Output
-%[result1, result2, result3, result4] = calculateGUIOutput(handles.desired_output, handles.transmission_line_type, handles.circuit_type, handles.input.characteristic_impedance, handles.input.substrate_thickness, handles.input.metal_thickness, handles.input.metal_conductivity, handles.input.frequency, handles.input.coupling_ratio);
+[result1, result2, result3, result4] = calculateGUIOutput(handles.desired_output, handles.transmission_line_type, handles.circuit_type, handles.input.characteristic_impedance, handles.input.substrate_thickness, handles.input.metal_thickness, handles.input.metal_conductivity, handles.input.relative_permittivity, handles.input.relative_permeability, handles.input.frequency, handles.input.coupling_ratio);
 
 %Set Result 1
 set(handles.text14,'String', 'Output');
