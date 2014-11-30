@@ -89,7 +89,7 @@ switch desired_output
     case 'Impedance'
         switch circuit_type
             case 'Wilkinson'
-                [Z12,Z13,R,R1, R2] = getResistance(coupling_ratio,characteristic_impedance,1);
+                [Z12,Z13,R,R1, R2] = Wilkinson.getResistance(coupling_ratio,characteristic_impedance,1);
                 result1 = num2str(Z12); result2 = num2str(Z13); result3 = num2str(R); result4 = num2str(R1); result5 = num2str(R2);
             case 'Quadrature'
                 [impedance_in, impedance01, impedance02] = QuadratureHybrid.calculateImpedance(coupling_ratio, characteristic_impedance);
@@ -130,7 +130,7 @@ switch desired_output
             otherwise
                 switch transmission_line_type
                     case 'Stripline'
-                        result1 = num2str(StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency));
+                        result1 = num2str(StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency, metal_conductivity, characteristic_impedance, substrate_thickness));
                     case 'Coaxial'
                         result1 = num2str(coaxial.getPropagationConstant(frequency, relative_permeability, relative_permittivity, metal_conductivity));
                     case 'Microstrip'

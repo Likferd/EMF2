@@ -35,7 +35,7 @@ classdef StriplineClass
             DielectricAttenuation = StriplineClass.getWavenumber(frequency,relative_permittivity) * StriplineClass.getLossTangent(frequency, relative_permittivity, conductivity)/2 ;
         end
         
-        function [ConductorAttenuation] = getConductorAttenuation(StriplineClass.getStriplineWidth(relative_permittivity, characteristicImpedance, substrateThickness), relative_permittivity, surface_resistance, substrateThickness, conductorThickness, characteristicImpedance)
+        function [ConductorAttenuation] = getConductorAttenuation(relative_permittivity, surface_resistance, substrateThickness, conductorThickness, characteristicImpedance)
             %input width cm, substrate thickness cm, conductor thickness mm
             %output Np/m
             A = 1 + (2 * StriplineClass.getStriplineWidth(relative_permittivity, characteristicImpedance, substrateThickness) * 10^(-2) ) / (substrateThickness * 10^(-2) - conductorThickness * 10^(-3)) + (1 / pi) * (substrateThickness * 10^(-2) + t * 10^(-3))/(substrateThickness * 10^(-2)- conductorThickness * 10^(-3)) * log(((2 * substrateThickness * 10^(-2) - conductorThickness * 10^(-3))) / (conductorThickness * 10^(-3)));
@@ -47,10 +47,10 @@ classdef StriplineClass
             end 
         end
 
-        function [gamma, beta] = getStriplinePropagationConstant(relative_permittivity, frequency)
+        function [gamma, beta] = getStriplinePropagationConstant(relative_permittivity, frequency, conductivity, characteristicImpedance, substrateThickness)
 
             % attenuation alpha, Np/m
-            alpha = StriplineClass.getDielectricAttenuation(StriplineClass.getWavenumber(frequency,relative_permittivity), frequency, relative_permittivity, StriplineClass.getLossTangent(frequency, relative_permittivity, conductivity), conductivity) + StriplineClass.getConductorAttenuation(StriplineClass.getStriplineWidth(relative_permittivity, characteristicImpedance, substrateThickness), relative_permittivity, surface_resistance, substrateThickness, conductorThickness, characteristicImpedance);
+            alpha = StriplineClass.getDielectricAttenuation(frequency, relative_permittivity, conductivity) + StriplineClass.getConductorAttenuation(StriplineClass.getStriplineWidth(relative_permittivity, characteristicImpedance, substrateThickness), relative_permittivity, surface_resistance, substrateThickness, conductorThickness, characteristicImpedance);
             
             % attenuation alpha, dB/m
             alpha_dB = 20 * log10(exp(alpha));
