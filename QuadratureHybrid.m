@@ -26,9 +26,10 @@ classdef QuadratureHybrid
                     width_in = substrateThickness*WDratio_g2(characteristicImpedance,relative_permittivity);
                 case 'Strip'
                     %Three widths associated with quadrature hybrid for stripline
-                    width1 = StriplineClass.getStriplineWidth(relative_permittivity, impedance01, substrateThickness);
-                    width2 = StriplineClass.getStriplineWidth(relative_permittivity, impedance02, substrateThickness);
-                    width_in = StriplineClass.getStriplineWidth(relative_permittivity, characteristicImpedance, substrateThickness);
+                    %Multiply by 100 to convert cm to meters
+                    width1 = 100*StriplineClass.getStriplineWidth(relative_permittivity, impedance01, substrateThickness);
+                    width2 = 100*StriplineClass.getStriplineWidth(relative_permittivity, impedance02, substrateThickness);
+                    width_in = 100*StriplineClass.getStriplineWidth(relative_permittivity, characteristicImpedance, substrateThickness);
                 case 'Coax'
                     %Three widths associated with quadrature hybrid for coaxial cable
                     width1 = coaxial.calculateWidth(substrateThickness, relative_permittivity, relative_permeability, impedance01);

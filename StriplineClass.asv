@@ -21,12 +21,10 @@ classdef StriplineClass
         end    
         
         function [LossTangent] = getLossTangent(frequency, relative_permittivity, conductivity)
-            %frequency in GHz
             LossTangent = conductivity / (frequency * relative_permittivity);
         end    
         
         function [lambda] =  getStriplineGuideWavelength(relative_permittivity, frequency)
-            %frequency in GHz
             c = 3*10^8;
             % wavelength, cm
             lambda = c / (sqrt(relative_permittivity) * (frequency * 10^9)) * 10^2;

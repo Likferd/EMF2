@@ -50,7 +50,8 @@ switch desired_output
             case 'Wilkinson'
                 switch transmission_line_type
                     case 'Stripline'
-                        lambda = StriplineClass.getStriplineGuideWavelength(relative_permittivity, frequency);
+                        %The stripline guide wavelength function takes frequency in GHz, so we need to convert our frequency in Hz to GHz by dividing by 10^9
+                        lambda = StriplineClass.getStriplineGuideWavelength(relative_permittivity, frequency/(10^9));
                     case 'Coaxial'
                         lambda = coaxial.getGuideWavelength(frequency, relative_permeability, relative_permittivity);
                     case 'Microstrip'
@@ -74,7 +75,9 @@ switch desired_output
             otherwise
                 switch transmission_line_type
                     case 'Stripline'
-                        [~, beta] = StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency, metal_conductivity, characteristic_impedance, substrate_thickness, mu_0*relative_permeability, metal_thickness);
+                        %The strip line propagation constant function takes frequency in GHz, so convert to GHz by dividing by 10^9
+                        %Convert substrate thickness to mm by multiplying by 10^3
+                        [~, beta] = StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency/(10^9), metal_conductivity, characteristic_impedance, substrate_thickness*(10^3), mu_0*relative_permeability, metal_thickness);
                         result1 = num2str(StriplineClass.getLength(beta,phase_shift));
                         result2 = ''; result3 = ''; result4 = '';
                     case 'Coaxial'
