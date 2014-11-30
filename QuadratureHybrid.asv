@@ -2,6 +2,60 @@
 %http://www.aps.anl.gov/asd/people/nassiri/USPAS2003/Lecture10.pdf
 
 classdef QuadratureHybrid
+    methods (Access = private, Static)
+        function [width] = getStriplineWidth(relative_permittivity, characteristicImpedance, substrateThickness)
+            %substrateThickness from m to cm
+            substrateThickness = substrateThickness*(10^2);
+            x = 30 * pi / (sqrt(relative_permittivity)*characteristicImpedance) - 0.441;
+            if sqrt(relative_permittivity) * characteristicImpedance < 120
+                  width = substrateThickness*x;
+            elseif sqrt(er) * Z0 > 120
+                  width = substrateThickness * (0.85 - sqrt(0.6 - x));
+            end
+        end
+        
+        function [length] = getStriplineLength()
+        end
+        
+        function [lambda] =  getStriplineGuideWavelength(relative_permittivity, frequency)
+            c = 3*10^8;
+            % wavelength, cm
+            lambda = c / (sqrt(relative_permittivity)* (frequency * 10^9)) * 10^2;
+        end
+        
+        function [gamma] = getStriplinePropagationConstant(relative_permittivity, frequency)
+            % Wavenumber, m^-1
+            c = 3 * 10 ^ 8; % m/s, speed of light
+            k = 2 * pi * (f * 10^9) * sqrt(er) / c;
+
+            % wavelength, cm
+            lambda = c / (sqrt(er)* (f * 10^9)) * 10^2;
+
+            % dielectric attenuation alpha_d, Np/m
+            alpha_d = k * loss_tangent / 2;
+
+            % conductor attenuation alpha_c,  Np/m
+            A = 1 + (2 * W * 10^(-2) ) / (b * 10^(-2) - t * 10^(-3)) + (1 / pi) * (b * 10^(-2) + t * 10^(-3))/(b * 10^(-2)- t * 10^(-3)) * log(((2 * b * 10^(-2) - t * 10^(-3))) / (t * 10^(-3)));
+            B = 1 + ((b * 10^(-2)) / (0.5 * (W * 10^(-2)) + 0.7 * (t * 10^(-3)))) * (0.5 + 0.414 * (t * 10^(-3)) / (W * 10^(-2)) + (1 / (2 * pi) * log(4 * pi * (W * 10^(-2)) / (t * 10^(-3)))));
+            if sqrt(er) * Z0 < 120
+                alpha_c = (2.7 * 10^(-3) * R_s * er * Z0 * A) / (30 * pi * ((b * 10^(-2) - (t * 10^(-3)))));
+            elseif sqrt(er) * Z0 > 120
+                alpha_c = 0.16 * R_s * B / (Z0 * (b * 10^(-2)));
+            end
+            
+            % attenuation alpha, Np/m
+            alpha = alpha_d + alpha_c;
+            
+            % attenuation alpha, dB/m
+            alpha_dB = 20 * log10(exp(alpha));
+
+            % phase constant, rad/m
+            beta = sqrt(relative_permittivity) * (2 * pi * frequency) / c;
+
+            % propagation constant, gamma
+            gamma = alpha + 1i * beta;
+        end
+    end
     
     methods (Access = public, Static)
         % relative_permittivity: F/m
