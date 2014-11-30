@@ -32,7 +32,7 @@ classdef Wilkinson
               case 1
                   Z12 = Z0*sqrt(2);
                   Z13 = Z0*sqrt(2);
-                  R = 2*z0;
+                  R = 2*Z0;
                   R2 = [];
                   R3 = [];
               case 0 
