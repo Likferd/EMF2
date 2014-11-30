@@ -44,6 +44,17 @@ classdef microstripclass
             gamma = 10^(gammaDB/20); %gamma not in dB
         end
         
+        function[Beta,BetadB] = getBeta(er,w,WDratio)
+            %w is the operational frequency, in rad/s
+            %u is relative permeability
+            
+            c = 3e8;
+            ee = (er+1)/2 + ((er-1)/2)*(1/sqrt(1+(12/WDratio)));
+            k0 = w/c;
+            Beta = sqrt(ee)*k0; BetadB = 20*log10(Beta);
+            
+        end
+        
         function[l,guidewavelength] = getLength(Beta,phi)
             % phi is desired phase shift, in degrees
             %Beta is the complex part of the propagation constant gamma
