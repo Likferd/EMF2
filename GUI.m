@@ -190,6 +190,8 @@ set(handles.popupmenu3, 'Visible', 'on');
 set(handles.pushbutton1, 'Enable', 'off');
 drawnow();
 
+guidata(hObject,handles);
+
 
 
 % --- If Enable == 'on', executes on mouse press in 5 pixel border.
@@ -235,6 +237,8 @@ set(handles.edit4, 'Visible', 'on');
 set(handles.edit5, 'Visible', 'on');
 set(handles.edit6, 'Visible', 'on');
 set(handles.edit7, 'Visible', 'on');
+
+guidata(hObject,handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns popupmenu3 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from popupmenu3
@@ -511,10 +515,12 @@ try
     handles.input.relative_permeability = str2double(relative_permeability);
 catch
     handles.input.relative_permeability = 0;
+    
 end
 set(hObject, 'Enable', 'off');
 drawnow();
 %Calculate Output
+handles.transmission_line_type;
 [result1, result2, result3, result4] = calculateGUIOutput(handles.desired_output, handles.transmission_line_type, handles.circuit_type, handles.input.characteristic_impedance, handles.input.substrate_thickness, handles.input.metal_thickness, handles.input.metal_conductivity, handles.input.relative_permittivity, handles.input.relative_permeability, handles.input.frequency, handles.input.coupling_ratio);
 
 %Set Result 1
@@ -535,6 +541,8 @@ set(handles.text15, 'Visible', 'on');
 set(handles.text17, 'Visible', 'on');
 set(handles.text18, 'Visible', 'on');
 drawnow();
+
+guidata(hObject,handles);
 
 
 

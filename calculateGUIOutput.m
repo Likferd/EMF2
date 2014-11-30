@@ -12,7 +12,7 @@ switch desired_output
                     case 'Microstrip'
                         [width_in, width1, width2] = QuadratureHyrid.calculateWidth(coupling_ratio, relative_permittivity, relative_permeability, characteristic_impedance, substrate_thickness, 'Micro');
                 end
-                result1 = num2str(width_in); result2 = num2str(width1); result3 = num2str(width2);
+                result1 = num2str(width_in); result2 = num2str(width1); result3 = num2str(width2); result4 = '';
             case 'Rat-Race'
             case 'Quarter-Wave'
             case 'General'

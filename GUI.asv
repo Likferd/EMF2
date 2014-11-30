@@ -1,3 +1,4 @@
+
 function varargout = GUI(varargin)
 % GUI MATLAB code for GUI.fig
 %      GUI, by itself, creates a new GUI or raises the existing
@@ -205,8 +206,7 @@ function popupmenu3_Callback(hObject, eventdata, handles)
 % hObject    handle to popupmenu3 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-desired_output = get(hObject, 'Value');
-switch desired_output
+switch get(hObject, 'Value')
     case 1
         handles.desired_output = 'Width';
     case 2
@@ -512,10 +512,12 @@ try
     handles.input.relative_permeability = str2double(relative_permeability);
 catch
     handles.input.relative_permeability = 0;
+    
 end
 set(hObject, 'Enable', 'off');
 drawnow();
 %Calculate Output
+handles.transmission_line_type;
 [result1, result2, result3, result4] = calculateGUIOutput(handles.desired_output, handles.transmission_line_type, handles.circuit_type, handles.input.characteristic_impedance, handles.input.substrate_thickness, handles.input.metal_thickness, handles.input.metal_conductivity, handles.input.relative_permittivity, handles.input.relative_permeability, handles.input.frequency, handles.input.coupling_ratio);
 
 %Set Result 1
