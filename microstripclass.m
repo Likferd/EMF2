@@ -28,10 +28,11 @@ classdef microstripclass
             lambda_g = 2*pi/Beta;
         end
         
-        function[gamma,alpha_d,alpha_c,Beta] = getPropConstants(er,w,u,sigma,WDratio,Z0)
+        function[gamma,alpha_d,alpha_c,Beta] = getPropConstants(er,w,u,sigma,WDratio,Z0,substratethickness)
             %w is the operational frequency, in rad/s
-            %u is relative permeability
-            
+            %u is permeability
+            u = u*pi*4e-7;
+            W = WDratio*substratethickness;
             c = 3e8;
             ee = (er+1)/2 + ((er-1)/2)*(1/sqrt(1+(12/WDratio)));
             loss_tangent = (w*imag(er) + sigma)/(w*real(er));
