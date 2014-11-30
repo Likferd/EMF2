@@ -35,7 +35,7 @@ switch desired_output
                         result1 = num2str(coaxial.calculateWidth(substrate_thickness,relative_permittivity, relative_permeability, characteristic_impedance));
                         result2 = ''; result3 = ''; result4 = '';
                     case 'Microstrip'
-                        result1 = num2str(substrate_thickness*WDratio_g2(characteristic_impedance, relative_permittivity)); result2 = ''; result3 = ''; result4 = '';
+                        result1 = num2str(substrate_thickness*W
                 end
         end
     case 'Length'
