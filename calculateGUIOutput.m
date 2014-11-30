@@ -30,11 +30,11 @@ switch desired_output
             case 'Quadrature'
                 switch transmission_line_type
                     case 'Stripline'
-                        length = QuadratureHybrid.calculateLength(relative_permittivity, frequency, 'Srip');
+                        length = QuadratureHybrid.calculateLength(relative_permittivity, relative_permeability, frequency, 'Srip');
                     case 'Coaxial'
-                        length = QuadratureHybrid.calculateLength(relative_permittivity, frequency, 'Coax');
+                        length = QuadratureHybrid.calculateLength(relative_permittivity, relative_permeability, frequency, 'Coax');
                     case 'Microstrip'
-                        length = QuadratureHybrid.calculateLength(relative_permittivity, frequency, 'Micro');
+                        length = QuadratureHybrid.calculateLength(relative_permittivity, relative_permeability, frequency, 'Micro');
                 end
                 result1 = num2str(length); result2 = ''; result3 = ''; result4 = '';
             case 'Rat-Race'

@@ -69,8 +69,8 @@ classdef QuadratureHybrid
             end%end switch statement
         end%end getWidth function
         
-        function [length] = calculateLength(relative_permittivity, relative_permittivity,frequency, fabricationType)
-            length = QuadratureHybrid.calculateGuideWavelength(relative_permittivity,frequency,fabricationType)/4;
+        function [length] = calculateLength(relative_permittivity, relative_permeability, frequency, fabricationType)
+            length = QuadratureHybrid.calculateGuideWavelength(relative_permittivity, relative_permeability,frequency,fabricationType)/4;
         end
         
         function [impedance_in, impedance01, impedance02] = calculateImpedance(coupling_ratio, characteristicImpedance)
