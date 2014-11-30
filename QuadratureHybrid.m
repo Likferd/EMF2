@@ -18,9 +18,9 @@ classdef QuadratureHybrid
             switch fabricationType
                 case 'Micro'
                     %Three widths associated with quadrature hybrid for microstrip
-                    width1 = QuadratureHybrid.substrateThickness*WDratio_g2(impedance01, relative_permittivity);
-                    width2 = QuadratureHybrid.substrateThickness*WDratio_g2(impedance02, relative_permittivity);
-                    width_in = QuadratureHybrid.substrateThickness*WDratio_g2(characteristicImpedance,relative_permittivity);
+                    width1 = substrateThickness*WDratio_g2(impedance01, relative_permittivity);
+                    width2 = substrateThickness*WDratio_g2(impedance02, relative_permittivity);
+                    width_in = substrateThickness*WDratio_g2(characteristicImpedance,relative_permittivity);
                 case 'Strip'
                     %Three widths associated with quadrature hybrid for stripline
                     width1 = QuadratureHybrid.getStriplineWidth(relative_permittivity, impedance01, substrateThickness);
@@ -47,10 +47,10 @@ classdef QuadratureHybrid
             impedance02 = impedance01/sqrt(1-(impedance01/characteristicImpedance)^2);
         end
         
-        function [propConst] = calculatePropagationConstant(conductivity, relative_permittivity, relative_permeability, frequency, fabricationType)
+        function [propConst] = calculatePropagationConstant(conductivity, relative_permittivity, relative_permeability, frequency, fabricationType, characteristicImpedance, substrateThickness)
             switch fabricationType
                 case 'Micro'
-                    propConst = microstripclass.getPropConstants(relative_permittivity,2*pi*frequency,relative_permeability,conductivity,WDratio,Z0);
+                    [propConst, ~, ~, ~] = microstripclass.getPropConstants(relative_permittivity,2*pi*frequency,relative_permeability,conductivity,WDratio_g2(characteristicImpedance, relative_permittivity),characteristicImpedance, substrateThickness);
                 case 'Strip'
                     propConst = QuadratureHybrid.getStriplinePropagationConstant(relative_permittivity, frequency);
                 case 'Coax'

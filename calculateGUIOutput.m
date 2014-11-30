@@ -10,7 +10,7 @@ switch desired_output
                     case 'Coaxial'
                         [width_in, width1, width2] = QuadratureHybrid.calculateWidth(coupling_ratio, relative_permittivity, relative_permeability, characteristic_impedance, substrate_thickness, 'Coax');
                     case 'Microstrip'
-                        [width_in, width1, width2] = QuadratureHyrid.calculateWidth(coupling_ratio, relative_permittivity, relative_permeability, characteristic_impedance, substrate_thickness, 'Micro');
+                        [width_in, width1, width2] = QuadratureHybrid.calculateWidth(coupling_ratio, relative_permittivity, relative_permeability, characteristic_impedance, substrate_thickness, 'Micro');
                 end
                 result1 = num2str(width_in); result2 = num2str(width1); result3 = num2str(width2); result4 = '';
             case 'Rat-Race'
@@ -67,11 +67,11 @@ switch desired_output
             case 'Quadrature'
                 switch transmission_line_type
                     case 'Stripline'
-                        propConst = QuadratureHybrid.calculatePropagationConstant(metal_conductivity, relative_permittivity, relative_permeability, frequency, 'Strip');
+                        propConst = QuadratureHybrid.calculatePropagationConstant(metal_conductivity, relative_permittivity, relative_permeability, frequency, 'Strip', characteristic_impedance, substrate_thickness);
                     case 'Coaxial'
-                        propConst = QuadratureHybrid.calculatePropagationConstant(metal_conductivity, relative_permittivity, relative_permeability, frequency, 'Coax');
+                        propConst = QuadratureHybrid.calculatePropagationConstant(metal_conductivity, relative_permittivity, relative_permeability, frequency, 'Coax', characteristic_impedance, substrate_thickness);
                     case 'Microstrip'
-                        propConst = QuadratureHybrid.calculatePropagationConstant(metal_conductivity, relative_permittivity, relative_permeability, frequency, 'Micro');
+                        propConst = QuadratureHybrid.calculatePropagationConstant(metal_conductivity, relative_permittivity, relative_permeability, frequency, 'Micro', characteristic_impedance, substrate_thickness);
                 end
                 result1 = num2str(propConst); result2 = ''; result3 = ''; result4 = '';
             case 'Rat-Race'
