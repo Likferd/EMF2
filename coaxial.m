@@ -16,7 +16,7 @@
 %   Propagation Constant
 %   Guide wavelength
 classdef coaxial
-properties (Access = private)
+properties (Access = private, Constant)
     epsilon_0 = 8.85418782*10-12;
     mu_0 = 1.25663706*10-6;
 end
@@ -32,7 +32,7 @@ end
      %Propagation Constant
      function [c] = getPropagationConstant(frequency, relative_permeability, relative_permittivity, conductivity)
          %We will have a complex value
-         c = 1i*(2*pi*frequency)*sqrt(coaxial.epsilon_0*relative_permeability*coaxial.mu_0*relative_permittivity)*sqrt(1-1i*(conductivity/(2*pi*frequency*permittivity)));
+         c = 1i*(2*pi*frequency)*sqrt(coaxial.epsilon_0*relative_permeability*coaxial.mu_0*relative_permittivity)*sqrt(1-1i*(conductivity/(2*pi*frequency*relative_permittivity)));
      end
      
      %Impedance

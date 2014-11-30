@@ -2,41 +2,6 @@
 %http://www.aps.anl.gov/asd/people/nassiri/USPAS2003/Lecture10.pdf
 
 classdef QuadratureHybrid
-    methods (Access = private, Static)
-        function [width] = getStriplineWidth(relative_permittivity, characteristicImpedance, substrateThickness)
-            %substrateThickness from m to cm
-            substrateThickness = substrateThickness*(10^2);
-            x = 30 * pi / (sqrt(relative_permittivity)*characteristicImpedance) - 0.441;
-            if sqrt(relative_permittivity) * characteristicImpedance < 120
-                  width = substrateThickness*x;
-            elseif sqrt(er) * Z0 > 120
-                  width = substrateThickness * (0.85 - sqrt(0.6 - x));
-            end
-        end
-        
-        function [length] = getStriplineLength()
-        end
-        
-        function [lambda] =  getStriplineGuideWavelength(relative_permittivity, frequency)
-            c = 3*10^8;
-            % wavelength, cm
-            lambda = c / (sqrt(relative_permittivity)* (frequency * 10^9)) * 10^2;
-        end
-        
-        function [gamma] = getStriplinePropagationConstant(relative_permittivity, frequency)
-            % attenuation alpha, Np/m
-            alpha = alpha_d + alpha_c;
-            
-            % attenuation alpha, dB/m
-            alpha_dB = 20 * log10(exp(alpha));
-
-            % phase constant, rad/m
-            beta = sqrt(relative_permittivity) * (2 * pi * frequency) / c;
-
-            % propagation constant, gamma
-            gamma = alpha + 1i * beta;
-        end
-    end
     
     methods (Access = public, Static)
         % relative_permittivity: F/m
@@ -53,9 +18,9 @@ classdef QuadratureHybrid
             switch fabricationType
                 case 'Micro'
                     %Three widths associated with quadrature hybrid for microstrip
-                    width1 = QuadratureHybrid.substrateThickness*WDratio_g2(impedance01, relative_permittivity);
-                    width2 = QuadratureHybrid.substrateThickness*WDratio_g2(impedance02, relative_permittivity);
-                    width_in = QuadratureHybrid.substrateThickness*WDratio_g2(characteristicImpedance,relative_permittivity);
+                    width1 = substrateThickness*WDratio_g2(impedance01, relative_permittivity);
+                    width2 = substrateThickness*WDratio_g2(impedance02, relative_permittivity);
+                    width_in = substrateThickness*WDratio_g2(characteristicImpedance,relative_permittivity);
                 case 'Strip'
                     %Three widths associated with quadrature hybrid for stripline
                     width1 = QuadratureHybrid.getStriplineWidth(relative_permittivity, impedance01, substrateThickness);
@@ -82,10 +47,10 @@ classdef QuadratureHybrid
             impedance02 = impedance01/sqrt(1-(impedance01/characteristicImpedance)^2);
         end
         
-        function [propConst] = calculatePropagationConstant(conductivity, relative_permittivity, relative_permeability, frequency, fabricationType)
+        function [propConst] = calculatePropagationConstant(conductivity, relative_permittivity, relative_permeability, frequency, fabricationType, characteristicImpedance, substrateThickness)
             switch fabricationType
                 case 'Micro'
-                    propConst = microstripclass.getPropConstants(relative_permittivity,2*pi*frequency,relative_permeability,conductivity,WDratio,Z0);
+                    [propConst, ~, ~, ~] = microstripclass.getPropConstants(relative_permittivity,2*pi*frequency,relative_permeability,conductivity,WDratio_g2(characteristicImpedance, relative_permittivity),characteristicImpedance, substrateThickness);
                 case 'Strip'
                     propConst = QuadratureHybrid.getStriplinePropagationConstant(relative_permittivity, frequency);
                 case 'Coax'
