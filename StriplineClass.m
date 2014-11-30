@@ -3,9 +3,8 @@ classdef StriplineClass
     methods (Access = public,Static)
         
         function [width] = getStriplineWidth(relative_permittivity, characteristicImpedance, substrateThickness)
-            %substrateThicknes from m to cm
+            %substrateThickness in cm, impedance in Ohms
             %output width in cm
-            substrateThickness = substrateThickness*(10^2);
             x = 30 * pi / (sqrt(relative_permittivity)*characteristicImpedance) - 0.441;
             if sqrt(relative_permittivity) * characteristicImpedance < 120
                   width = substrateThickness*x;
