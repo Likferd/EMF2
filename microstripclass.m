@@ -3,7 +3,7 @@ classdef microstripclass
     %   Detailed explanation goes her
     methods (Access = public, Static)
     
-        function [Wdratio] = getWDratio_g2(Z0,er,GreaterThanTwo)
+        function [Wdratio] = getWDratio(Z0,er,GreaterThanTwo)
         %enter Boolean for "Greater than Two" 
         % 1 if W/D should be greater than 2, 0 if it should be less than 2
             if GreaterThanTwo == 1
@@ -16,7 +16,7 @@ classdef microstripclass
         end
         
         function [Z0] = getZ0(Wdratio,er)
-             ee = (er+1)/2 + ((er-1)/2)*(1/sqrt(1+(12/WDratio)));
+             ee = (er+1)/2 + ((er-1)/2)*(1/sqrt(1+(12/Wdratio)));
              if Wdratio > 1
                 Z0 = (120*pi) / (sqrt(ee)*(Wdratio + 1.393 + .667*log(Wdratio + 1.444)));
              else
