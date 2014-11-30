@@ -8,7 +8,7 @@ classdef QuarterWaveStub
         end
         
         function [Zin] = getZin(Beta,l,Z1,ZL)
-            Zin = Z1*((ZL + 1*j*Z1*tan(Beta*l))/(Z1 + 1*j*ZL*tan(Beta*l)));
+            Zin = Z1*((ZL + 1*1j*Z1*tan(Beta*l))/(Z1 + 1*1j*ZL*tan(Beta*l)));
         end
         
         function [BL] = getBetaL(f0,guidewavelength)
@@ -25,6 +25,7 @@ classdef QuarterWaveStub
         end
         
         function [Theta_m,fm,BW] = getTheta_m(Gamma_m, Z0,ZL,f0)
+            %Gamma_m is the maximum Gamma value
             cosThetam = (Gamma_m/sqrt(1-Gamma_m^2)) * 2*sqrt(Z0*ZL)/abs(ZL-Z0);
             Theta_m = acosd(cosThetam); %gives theta m in degrees
             
