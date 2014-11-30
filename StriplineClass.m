@@ -6,10 +6,10 @@ classdef StriplineClass
             %substrateThicknes from m to cm
             %output width in cm
             substrateThickness = substrateThickness*(10^2);
-            x = 30 * pi / (sqrt(er)*characteristicImpedance) - 0.441;
+            x = 30 * pi / (sqrt(relative_permittivity)*characteristicImpedance) - 0.441;
             if sqrt(relative_permittivity) * characteristicImpedance < 120
                   width = substrateThickness*x;
-            elseif sqrt(er) *  characteristicImpedance > 120
+            elseif sqrt(relative_permittivity) *  characteristicImpedance > 120
                   width = substrateThickness * (0.85 - sqrt(0.6 - x));
             end
         end
@@ -46,8 +46,9 @@ classdef StriplineClass
                  ConductorAttenuation = 0.16 * surface_resistance * B / (characteristicImpedance * (substrateThickness * 10^(-2)));
             end 
         end
-        
-        function [gamma] = getStriplinePropagationConstant(relative_permittivity, frequency, conductivity, surface_resistance, substrateThickness, conductorThickness, characteristicImpedance)
+
+        function [gamma, beta] = getStriplinePropagationConstant(relative_permittivity, frequency)
+
             % attenuation alpha, Np/m
             alpha = StriplineClass.getDielectricAttenuation(StriplineClass.getWavenumber(frequency,relative_permittivity), frequency, relative_permittivity, StriplineClass.getLossTangent(frequency, relative_permittivity, conductivity), conductivity) + StriplineClass.getConductorAttenuation(StriplineClass.getStriplineWidth(relative_permittivity, characteristicImpedance, substrateThickness), relative_permittivity, surface_resistance, substrateThickness, conductorThickness, characteristicImpedance);
             
@@ -59,6 +60,12 @@ classdef StriplineClass
 
             % propagation constant, gamma
             gamma = alpha + 1i * beta;
+        end
+        
+       function[l] = getLength(Beta,phi)
+            % phi is desired phase shift, in degrees
+            %Beta is the complex part of the propagation constant gamma
+            l = phi*(pi/180)/Beta; 
         end
     end
         

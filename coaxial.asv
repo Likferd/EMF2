@@ -30,7 +30,7 @@ end
      end
      
      %Get Length
-     %function
+     function
      
      %Propagation Constant
      function [c] = getPropagationConstant(frequency, relative_permeability, relative_permittivity, conductivity)

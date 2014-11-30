@@ -1,4 +1,7 @@
 function [ result1, result2, result3, result4 ] = calculateGUIOutput( desired_output, transmission_line_type, circuit_type, characteristic_impedance, substrate_thickness, metal_thickness, metal_conductivity, relative_permittivity, relative_permeability, frequency, coupling_ratio )
+epsilon_0 = 8.85418782*10-12;
+mu_0 = 1.25663706*10-6;
+
 switch desired_output
     case  'Width'
         switch circuit_type
@@ -31,12 +34,13 @@ switch desired_output
             case 'General'
                 switch transmission_line_type
                     case 'Stripline'
+                        result1 = num2str(StriplineClass.getStriplineWidth(relative_permittivity, characteristic_impedance, substrate_thickness));
                     case 'Coaxial'
                         result1 = num2str(coaxial.calculateWidth(substrate_thickness,relative_permittivity, relative_permeability, characteristic_impedance));
-                        result2 = ''; result3 = ''; result4 = '';
                     case 'Microstrip'
-                        result1 = num2str(substrate_thickness*WDratio_g2(characteristic_impedance, relative_permittivity)); result2 = ''; result3 = ''; result4 = '';
-                end
+                        result1 = num2str(substrate_thickness*WDratio_g2(characteristic_impedance, relative_permittivity));
+               end
+               result2 = ''; result3 = ''; result4 = '';
         end
     case 'Length'
         switch circuit_type
@@ -72,8 +76,10 @@ switch desired_output
                 switch transmission_line_type
                     case 'Stripline'
                     case 'Coaxial'
+                        result1 = num2str(coaxial.getImpedance(characteristic_impedance, substrate_thickness, relative_permeability, relative_permittivity));
                     case 'Microstrip'
                 end
+               result2 = ''; result3 = ''; result4 = '';
         end
     case 'Propagation Constant'
         switch circuit_type
@@ -115,9 +121,14 @@ switch desired_output
             case 'General'
                 switch transmission_line_type
                     case 'Stripline'
+                        result1 = num2str(StriplineClass.getStriplineGuideWavelength(relative_permittivity, frequency));
                     case 'Coaxial'
+                        result1 = num2str(coaxial.getGuideWavelength(frequency, relative_permeability, relative_permittivity));
                     case 'Microstrip'
+                        [~,~,~,beta] = microstripclass.getPropConstants(relative_permittivity,2*pi*frequency,mu_0*relative_permeability,metal_conductivity,WDratio_g2(characteristic_impedance,relative_permittivity),characteristic_impedance,substrate_thickness);
+                        result1 = num2str(microstripclass.getGuideWavelength(beta));
                 end
+                result2 = ''; result3 = ''; result4 = '';
         end
 end
 end
