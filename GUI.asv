@@ -89,7 +89,7 @@ set(handles.text14, 'Visible', 'off');
 set(handles.text15, 'Visible', 'off');
 set(handles.text17, 'Visible', 'off');
 set(handles.text18, 'Visible', 'off');
-set(handles.text22, 'Visible', 'off');
+set(handles
 drawnow();
 
 
@@ -534,22 +534,22 @@ set(hObject, 'Enable', 'off');
 drawnow();
 %Calculate Output
 handles.transmission_line_type;
-[result1, result2, result3, result4, result5] = calculateGUIOutput(handles.desired_output, handles.transmission_line_type, handles.circuit_type, handles.input.characteristic_impedance, handles.input.substrate_thickness, handles.input.metal_thickness, handles.input.metal_conductivity, handles.input.relative_permittivity, handles.input.relative_permeability, handles.input.frequency, handles.input.coupling_ratio, handles.input.phase_shift);
+[result1, result2, result3, result4] = calculateGUIOutput(handles.desired_output, handles.transmission_line_type, handles.circuit_type, handles.input.characteristic_impedance, handles.input.substrate_thickness, handles.input.metal_thickness, handles.input.metal_conductivity, handles.input.relative_permittivity, handles.input.relative_permeability, handles.input.frequency, handles.input.coupling_ratio);
 
 %Set Result 1
-set(handles.text14,'String', result1);
+set(handles.text14,'String', 'Output');
 
 %Set Result 2
-set(handles.text15, 'String', result2);
+set(handles.text15, 'String', '');
 
 %Set Result 3
-set(handles.text17, 'String', result3);
+set(handles.text17, 'String', '');
 
 %Set Result 4
-set(handles.text18, 'String', result4);
+set(handles.text18, 'String', '');
 
 %Set Result 5
-set(handles.text22, 'String', result5);
+set(handles.text22, 'String', '');
 
 %Make Output visible
 set(handles.text14, 'Visible', 'on');

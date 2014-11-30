@@ -30,7 +30,7 @@ classdef StriplineClass
             lambda = c / (sqrt(relative_permittivity) * (frequency * 10^9)) * 10^2;
         end
         
-        function [DielectricAttenuation] = getDielectricAttenuation(StriplineClass.getWavenumber(frequency,relative_permittivity), frequency, relative_permittivity,StriplineClass.getLossTangent(frequency, relative_permittivity, conductivity), conductivity)
+        function [DielectricAttenuation] = getDielectricAttenuation(frequency, relative_permittivity, conductivity)
             %Np/m
             DielectricAttenuation = StriplineClass.getWavenumber(frequency,relative_permittivity) * StriplineClass.getLossTangent(frequency, relative_permittivity, conductivity)/2 ;
         end
