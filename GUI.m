@@ -22,7 +22,7 @@ function varargout = GUI(varargin)
 
 % Edit the above text to modify the response to help GUI
 
-% Last Modified by GUIDE v2.5 29-Nov-2014 17:52:10
+% Last Modified by GUIDE v2.5 29-Nov-2014 19:42:37
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -58,9 +58,31 @@ handles.output = hObject;
 % Update handles structure
 guidata(hObject, handles);
 
-% Hide input and output buttons
+% Hide undesired elements on input
 set(handles.text4, 'Visible', 'off');
 set(handles.popupmenu3, 'Visible', 'off');
+
+%Make Inputs not visible
+set(handles.text5, 'Visible', 'off');
+set(handles.text6, 'Visible', 'off');
+set(handles.text8, 'Visible', 'off');
+set(handles.text9, 'Visible', 'off');
+set(handles.text10, 'Visible', 'off');
+set(handles.text11, 'Visible', 'off');
+set(handles.pushbutton4, 'Visible', 'off');
+set(handles.edit1, 'Visible', 'off');
+set(handles.edit2, 'Visible', 'off');
+set(handles.edit4, 'Visible', 'off');
+set(handles.edit5, 'Visible', 'off');
+set(handles.edit6, 'Visible', 'off');
+set(handles.edit7, 'Visible', 'off');
+
+%Make Output not visible
+set(handles.text14, 'Visible', 'off');
+set(handles.text15, 'Visible', 'off');
+set(handles.text17, 'Visible', 'off');
+set(handles.text18, 'Visible', 'off');
+
 drawnow();
 
 
@@ -102,7 +124,6 @@ function popupmenu1_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-
 
 % --- Executes on selection change in popupmenu2.
 function popupmenu2_Callback(hObject, eventdata, handles)
@@ -179,10 +200,36 @@ function popupmenu3_Callback(hObject, eventdata, handles)
 % hObject    handle to popupmenu3 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+desired_output = get(hObject, 'Value');
+switch desired_output
+    case 1
+        handles.desired_output = 'Width';
+    case 2
+        handles.desired_output = 'Length';
+    case 3
+        handles.desired_output = 'Impedance';
+    case 4
+        handles.desired_output = 'Propagation Constant';
+    case 5
+        handles.desired_output = 'Guide Wavelength';
+end
+%set inputs visible
+set(handles.text5, 'Visible', 'on');
+set(handles.text6, 'Visible', 'on');
+set(handles.text8, 'Visible', 'on');
+set(handles.text9, 'Visible', 'on');
+set(handles.text10, 'Visible', 'on');
+set(handles.text11, 'Visible', 'on');
+set(handles.pushbutton4, 'Visible', 'on');
+set(handles.edit1, 'Visible', 'on');
+set(handles.edit2, 'Visible', 'on');
+set(handles.edit4, 'Visible', 'on');
+set(handles.edit5, 'Visible', 'on');
+set(handles.edit6, 'Visible', 'on');
+set(handles.edit7, 'Visible', 'on');
 
 % Hints: contents = cellstr(get(hObject,'String')) returns popupmenu3 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from popupmenu3
-
 
 % --- Executes during object creation, after setting all properties.
 function popupmenu3_CreateFcn(hObject, eventdata, handles)
@@ -202,9 +249,33 @@ function pushbutton2_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+%Re-Enable starting elements
 set(handles.pushbutton1, 'Enable', 'on');
 set(handles.text4, 'Visible', 'off');
 set(handles.popupmenu3, 'Visible', 'off');
+
+%Make Inputs not visible
+set(handles.text5, 'Visible', 'off');
+set(handles.text6, 'Visible', 'off');
+set(handles.text8, 'Visible', 'off');
+set(handles.text9, 'Visible', 'off');
+set(handles.text10, 'Visible', 'off');
+set(handles.text11, 'Visible', 'off');
+set(handles.pushbutton4, 'Visible', 'off');
+set(handles.pushbutton4, 'Enable', 'on');
+set(handles.edit1, 'Visible', 'off');
+set(handles.edit2, 'Visible', 'off');
+set(handles.edit4, 'Visible', 'off');
+set(handles.edit5, 'Visible', 'off');
+set(handles.edit6, 'Visible', 'off');
+set(handles.edit7, 'Visible', 'off');
+
+%Make Output not visible
+set(handles.text14, 'Visible', 'off');
+set(handles.text15, 'Visible', 'off');
+set(handles.text17, 'Visible', 'off');
+set(handles.text18, 'Visible', 'off');
 drawnow();
 
 
@@ -381,3 +452,108 @@ function pushbutton4_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton4 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+characteristic_impedance = get(handles.edit1, 'String');
+try
+    handles.input.characteristic_impedance = str2double(characteristic_impedance);
+catch
+    handles.input.characteristic_impedance = 0;
+end
+substrate_thickness = get(handles.edit2, 'String');
+try
+    handles.input.substrate_thickness = str2double(substrate_thickness);
+catch
+    handles.input.substrate_thickness = 0;
+end
+metal_thickness = get(handles.edit4, 'String');
+try
+    handles.input.metal_thickness = str2double(metal_thickness);
+catch
+    handles.input.metal_thickness = 0;
+end
+metal_conductivity = get(handles.edit5, 'String');
+try
+    handles.input.metal_conductivity = str2double(metal_conductivity);
+catch
+    handles.input.metal_conductivity = 0;
+end
+frequency = get(handles.edit6, 'String');
+try
+    handles.input.frequency = str2double(frequency);
+catch
+    handles.input.frequency = 0;
+end
+coupling_ratio = get(handles.edit7, 'String');
+try
+    handles.input.coupling_ratio = str2double(coupling_ratio);
+catch
+    handles.input.coupling_ratio = 0;
+end
+set(hObject, 'Enable', 'off');
+drawnow();
+%Calculate Output
+%[result1, result2, result3, result4] = calculateGUIOutput(handles.desired_output, handles.transmission_line_type, handles.circuit_type, handles.input.characteristic_impedance, handles.input.substrate_thickness, handles.input.metal_thickness, handles.input.metal_conductivity, handles.input.frequency, handles.input.coupling_ratio);
+
+%Set Result 1
+set(handles.text14,'String', 'Output');
+
+%Set Result 2
+set(handles.text15, 'String', '');
+
+%Set Result 3
+set(handles.text17, 'String', '');
+
+%Set Result 4
+set(handles.text18, 'String', '');
+
+%Make Output visible
+set(handles.text14, 'Visible', 'on');
+set(handles.text15, 'Visible', 'on');
+set(handles.text17, 'Visible', 'on');
+set(handles.text18, 'Visible', 'on');
+drawnow();
+
+
+
+function edit8_Callback(hObject, eventdata, handles)
+% hObject    handle to edit8 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit8 as text
+%        str2double(get(hObject,'String')) returns contents of edit8 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit8_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit8 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit9_Callback(hObject, eventdata, handles)
+% hObject    handle to edit9 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit9 as text
+%        str2double(get(hObject,'String')) returns contents of edit9 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit9_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit9 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
