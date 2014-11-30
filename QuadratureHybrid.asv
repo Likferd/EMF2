@@ -2,10 +2,7 @@
 %http://www.aps.anl.gov/asd/people/nassiri/USPAS2003/Lecture10.pdf
 
 classdef QuadratureHybrid
-    properties (Access = private, Constant)
-        epsilon_0 = 8.85418782*10-12;
-        mu_0 = 1.25663706*10-6;
-    end
+    
     methods (Access = public, Static)
         % relative_permittivity: F/m
         % characteristicImpedance: Ohms
@@ -50,12 +47,12 @@ classdef QuadratureHybrid
             impedance02 = impedance01/sqrt(1-(impedance01/characteristicImpedance)^2);
         end
         
-        function [propConst] = calculatePropagationConstant(conductivity, relative_permittivity, relative_permeability, frequency, fabricationType, characteristicImpedance, substrateThickness, conductorThickness)
+        function [propConst] = calculatePropagationConstant(conductivity, relative_permittivity, relative_permeability, frequency, fabricationType, characteristicImpedance, substrateThickness)
             switch fabricationType
                 case 'Micro'
                     [propConst, ~, ~, ~] = microstripclass.getPropConstants(relative_permittivity,2*pi*frequency,relative_permeability,conductivity,WDratio_g2(characteristicImpedance, relative_permittivity),characteristicImpedance, substrateThickness);
                 case 'Strip'
-                    propConst = StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency, conductivity, characteristicImpedance, substrateThickness, QuadratureHybrid.mu_0*relative_permeability, conductorThickness);
+                    propConst = StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency, conductivity, characteristicImpedance, substrateThickness, mu_0*relative_permeability, conductor_thickness);
                 case 'Coax'
                     propConst = coaxial.getPropagationConstant(frequency, relative_permeability, relative_permittivity, conductivity);
             end

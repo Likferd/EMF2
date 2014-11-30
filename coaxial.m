@@ -40,7 +40,7 @@ end
      
      %Impedance
      function [lineImpedance] = getImpedance(characteristicImpedance, substrateThickness, relative_permeability, relative_permittivity)
-        a = calculateWidth(substrateThickness,relative_permittivity, relative_permeability, characteristicImpedance);
+        a = coaxial.calculateWidth(substrateThickness,relative_permittivity, relative_permeability, characteristicImpedance);
         b = substrateThickness - a;
         lineImpedance = characteristicImpedance*log(b/a)/(sqrt(relative_permittivity)*2*pi);
      end
