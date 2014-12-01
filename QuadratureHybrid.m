@@ -51,7 +51,7 @@ classdef QuadratureHybrid
             impedance02 = impedance01/sqrt(1-(impedance01/characteristicImpedance)^2);
         end
         
-        function [propConst] = calculatePropagationConstant(conductivity, relative_permittivity, relative_permeability, frequency, fabricationType, characteristicImpedance, substrateThickness, conductorThickness)
+        function [propConst] = calculatePropagationConstant(conductivity, relative_permittivity, relative_permeability, frequency, fabricationType, characteristicImpedance, substrateThickness, conductorThickness, phase_shift)
             switch fabricationType
                 case 'Micro'
                     [propConst, ~, ~, ~] = microstripclass.getPropConstants(relative_permittivity,2*pi*frequency,relative_permeability,conductivity,WDratio_g2(characteristicImpedance, relative_permittivity),characteristicImpedance, substrateThickness);
@@ -60,7 +60,7 @@ classdef QuadratureHybrid
                     %Input substrateThickness should be in cm
                     %Input conductor thickness should be in cm
                     %Calc surface resistance
-                    propConst = StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency/(10^9), conductivity, characteristicImpedance, substrateThickness*100, QuadratureHybrid.mu_0*relative_permeability, conductorThickness*100);
+                    propConst = StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency/(10^9), conductivity, characteristicImpedance, substrateThickness*100, phase_shift, conductorThickness*100);
                 case 'Coax'
                     propConst = coaxial.getPropagationConstant(frequency, relative_permeability, relative_permittivity, conductivity);
             end

@@ -79,7 +79,7 @@ switch desired_output
                     case 'Stripline'
                         %The strip line propagation constant function takes frequency in GHz, so convert to GHz by dividing by 10^9
                         %Convert substrate thickness to cm by multiplying by 100
-                        [~, beta] = StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency/(10^9), metal_conductivity, characteristic_impedance, substrate_thickness*100, mu_0*relative_permeability, metal_thickness*100);
+                        [~, beta] = StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency/(10^9), metal_conductivity, characteristic_impedance, substrate_thickness*100, phase_shift, metal_thickness*100);
                         result1 = num2str(StriplineClass.getLength(beta,phase_shift));
                         result2 = ''; result3 = ''; result4 = '';
                     case 'Coaxial'
@@ -120,11 +120,11 @@ switch desired_output
             case 'Quadrature'
                 switch transmission_line_type
                     case 'Stripline'
-                        propConst = QuadratureHybrid.calculatePropagationConstant(metal_conductivity, relative_permittivity, relative_permeability, frequency, 'Strip', characteristic_impedance, substrate_thickness, metal_thickness);
+                        propConst = QuadratureHybrid.calculatePropagationConstant(metal_conductivity, relative_permittivity, relative_permeability, frequency, 'Strip', characteristic_impedance, substrate_thickness, metal_thickness, phase_shift);
                     case 'Coaxial'
-                        propConst = QuadratureHybrid.calculatePropagationConstant(metal_conductivity, relative_permittivity, relative_permeability, frequency, 'Coax', characteristic_impedance, substrate_thickness, metal_thickness);
+                        propConst = QuadratureHybrid.calculatePropagationConstant(metal_conductivity, relative_permittivity, relative_permeability, frequency, 'Coax', characteristic_impedance, substrate_thickness, metal_thickness, phase_shift);
                     case 'Microstrip'
-                        propConst = QuadratureHybrid.calculatePropagationConstant(metal_conductivity, relative_permittivity, relative_permeability, frequency, 'Micro', characteristic_impedance, substrate_thickness, metal_thickness);
+                        propConst = QuadratureHybrid.calculatePropagationConstant(metal_conductivity, relative_permittivity, relative_permeability, frequency, 'Micro', characteristic_impedance, substrate_thickness, metal_thickness, phase_shift);
                 end
                 result1 = num2str(propConst); result2 = ''; result3 = ''; result4 = '';
             case 'Rat-Race'
@@ -139,7 +139,7 @@ switch desired_output
                         %Input frequency should be in GHz
                         %Input substrate thickness should be in cm
                         %Input metal thickness should be in cm
-                        result1 = num2str(StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency/(10^9), metal_conductivity, characteristic_impedance, substrate_thickness*100, mu_0*relative_permeability, metal_thickness*100));
+                        result1 = num2str(StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency/(10^9), metal_conductivity, characteristic_impedance, substrate_thickness*100, phase_shift, metal_thickness*100));
                     case 'Coaxial'
                         result1 = num2str(coaxial.getPropagationConstant(frequency, relative_permeability, relative_permittivity, metal_conductivity));
                     case 'Microstrip'

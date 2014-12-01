@@ -57,19 +57,20 @@ classdef StriplineClass
 
         end
 
-        function [gamma, beta] = getStriplinePropagationConstant(relative_permittivity, frequency, conductivity, characteristicImpedance, substrateThickness, permeability, conductorThickness)
+        function [gamma, beta] = getStriplinePropagationConstant(relative_permittivity, frequency, conductivity, characteristicImpedance, substrateThickness, phi, conductorThickness)
             %input width cm, substrate thickness cm, conductor thickness mm
             %permeability is mu_0*relative_permeability
-
+            
+            % phase constant, rad/m
+            beta = sqrt(relative_permittivity) * (2 * pi * frequency) / (3*10^8);            
             
             % attenuation alpha, Np/m
-            alpha = StriplineClass.getDielectricAttenuation(frequency, relative_permittivity, conductivity) + StriplineClass.getConductorAttenuation(relative_permittivity, StriplineClass.getSurfaceResistance(conductivity, frequency, permeability), substrateThickness, conductorThickness, characteristicImpedance);
+            alpha = StriplineClass.getDielectricAttenuation(frequency, relative_permittivity, conductivity) + StriplineClass.getConductorAttenuation(relative_permittivity, StriplineClass.getSurfaceResistance(conductivity, beta, phi, conductorThickness,relative_permittivity, characteristicImpedance, substrateThickness), substrateThickness, conductorThickness, characteristicImpedance);
             
             % attenuation alpha, dB/m
             alpha_dB = 20 * log10(exp(alpha));
 
-            % phase constant, rad/m
-            beta = sqrt(relative_permittivity) * (2 * pi * frequency) / (3*10^8);
+
 
             % propagation constant, gamma
             gamma = alpha + 1i * beta;
