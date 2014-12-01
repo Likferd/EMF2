@@ -25,7 +25,8 @@ end
      
      %Guide Wavelength
      function [w, beta] = getGuideWavelength(frequency, relative_permeability, relative_permittivity)
-         beta = (2*pi*frequency)*sqrt(coaxial.epsilon_0*relative_permeability*coaxial.mu_0*relative_permittivity);
+         beta = sqrt(relative_permittivity)*2*pi*frequency/(3*10^8);
+         %beta = (2*pi*frequency)*sqrt(coaxial.epsilon_0*relative_permeability*coaxial.mu_0*relative_permittivity);
          w = 2*pi/beta;
      end
      
