@@ -26,15 +26,15 @@ classdef QuadratureHybrid
                     width_in = substrateThickness*WDratio_g2(characteristicImpedance,relative_permittivity);
                 case 'Strip'
                     %Three widths associated with quadrature hybrid for stripline
-                    %Multiply by 100 to convert cm to meters
-                    width1 = 100*StriplineClass.getStriplineWidth(relative_permittivity, impedance01, substrateThickness);
-                    width2 = 100*StriplineClass.getStriplineWidth(relative_permittivity, impedance02, substrateThickness);
-                    width_in = 100*StriplineClass.getStriplineWidth(relative_permittivity, characteristicImpedance, substrateThickness);
+                    %Multiply by 100 to convert m to cm for substrateThickness
+                    width1 = 0.01*StriplineClass.getStriplineWidth(relative_permittivity, impedance01, substrateThickness*100);
+                    width2 = 0.01*StriplineClass.getStriplineWidth(relative_permittivity, impedance02, substrateThickness*100);
+                    width_in = 0.01*StriplineClass.getStriplineWidth(relative_permittivity, characteristicImpedance, substrateThickness*100);
                 case 'Coax'
                     %Three widths associated with quadrature hybrid for coaxial cable
-                    width1 = coaxial.calculateWidth(substrateThickness, relative_permittivity, relative_permeability, impedance01);
-                    width2 = coaxial.calculateWidth(substrateThickness, relative_permittivity, relative_permeability, impedance02);           
-                    width_in = coaxial.calculateWidth(substrateThickness, relative_permittivity, relative_permeability, characteristicImpedance);            
+                    width1 = coaxial.calculateWidth(substrateThickness, relative_permittivity, impedance01);
+                    width2 = coaxial.calculateWidth(substrateThickness, relative_permittivity, impedance02);           
+                    width_in = coaxial.calculateWidth(substrateThickness, relative_permittivity, characteristicImpedance);            
             end%end switch statement
         end%end getWidth function
         
@@ -56,7 +56,11 @@ classdef QuadratureHybrid
                 case 'Micro'
                     [propConst, ~, ~, ~] = microstripclass.getPropConstants(relative_permittivity,2*pi*frequency,relative_permeability,conductivity,WDratio_g2(characteristicImpedance, relative_permittivity),characteristicImpedance, substrateThickness);
                 case 'Strip'
-                    propConst = StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency, conductivity, characteristicImpedance, substrateThickness, QuadratureHybrid.mu_0*relative_permeability, conductorThickness);
+                    %Input frequency should be in GHz
+                    %Input substrateThickness should be in cm
+                    %Input conductor thickness should be in cm
+                    %Calc surface resistance
+                    propConst = StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency/(10^9), conductivity, characteristicImpedance, substrateThickness*100, QuadratureHybrid.mu_0*relative_permeability, conductorThickness*100);
                 case 'Coax'
                     propConst = coaxial.getPropagationConstant(frequency, relative_permeability, relative_permittivity, conductivity);
             end
@@ -70,7 +74,9 @@ classdef QuadratureHybrid
                     lambda_0 = 3*10^8/frequency;
                     lambda = lambda_0/sqrt(relative_permittivity);
                 case 'Strip'
-                    lambda = StriplineClass.getStriplineGuideWavelength(relative_permittivity, frequency);
+                    %Input frequency should be in GHz
+                    %Output will be in cm
+                    lambda = 0.01*StriplineClass.getStriplineGuideWavelength(relative_permittivity, frequency/(10^9));
                 case 'Coax'
                     lambda = coaxial.getGuideWavelength(frequency, relative_permeability, relative_permittivity);
             end

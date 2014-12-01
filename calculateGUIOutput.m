@@ -35,8 +35,9 @@ switch desired_output
             otherwise
                 switch transmission_line_type
                     case 'Stripline'
-                        %Stripline width outputs to cm, we need to convert this to meters by multiplying by 100
-                        result1 = num2str(100*StriplineClass.getStriplineWidth(relative_permittivity, characteristic_impedance, substrate_thickness));
+                        %Stripline width outputs to cm, we need to convert this to meters by multiplying by 0.01
+                        %Substrate thickness input should be in cm
+                        result1 = num2str(0.01*StriplineClass.getStriplineWidth(relative_permittivity, characteristic_impedance, 100*substrate_thickness));
                     case 'Coaxial'
                         result1 = num2str(coaxial.calculateWidth(substrate_thickness,relative_permittivity, relative_permeability, characteristic_impedance));
                     case 'Microstrip'
@@ -50,7 +51,8 @@ switch desired_output
             case 'Wilkinson'
                 switch transmission_line_type
                     case 'Stripline'
-                        lambda = StriplineClass.getStriplineGuideWavelength(relative_permittivity, frequency);
+                        %The stripline guide wavelength function takes frequency in GHz, so we need to convert our frequency in Hz to GHz by dividing by 10^9
+                        lambda = StriplineClass.getStriplineGuideWavelength(relative_permittivity, frequency/(10^9));
                     case 'Coaxial'
                         lambda = coaxial.getGuideWavelength(frequency, relative_permeability, relative_permittivity);
                     case 'Microstrip'
@@ -61,6 +63,7 @@ switch desired_output
             case 'Quadrature'
                 switch transmission_line_type
                     case 'Stripline'
+                        
                         length = QuadratureHybrid.calculateLength(relative_permittivity, relative_permeability, frequency, 'Strip');
                     case 'Coaxial'
                         length = QuadratureHybrid.calculateLength(relative_permittivity, relative_permeability, frequency, 'Coax');
@@ -74,7 +77,9 @@ switch desired_output
             otherwise
                 switch transmission_line_type
                     case 'Stripline'
-                        [~, beta] = StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency, metal_conductivity, characteristic_impedance, substrate_thickness, mu_0*relative_permeability, metal_thickness);
+                        %The strip line propagation constant function takes frequency in GHz, so convert to GHz by dividing by 10^9
+                        %Convert substrate thickness to cm by multiplying by 100
+                        [~, beta] = StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency/(10^9), metal_conductivity, characteristic_impedance, substrate_thickness*100, mu_0*relative_permeability, metal_thickness*100);
                         result1 = num2str(StriplineClass.getLength(beta,phase_shift));
                         result2 = ''; result3 = ''; result4 = '';
                     case 'Coaxial'
@@ -131,7 +136,10 @@ switch desired_output
             otherwise
                 switch transmission_line_type
                     case 'Stripline'
-                        result1 = num2str(StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency, metal_conductivity, characteristic_impedance, substrate_thickness, mu_0*relative_permeability, metal_thickness));
+                        %Input frequency should be in GHz
+                        %Input substrate thickness should be in cm
+                        %Input metal thickness should be in cm
+                        result1 = num2str(StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency/(10^9), metal_conductivity, characteristic_impedance, substrate_thickness*100, mu_0*relative_permeability, metal_thickness*100));
                     case 'Coaxial'
                         result1 = num2str(coaxial.getPropagationConstant(frequency, relative_permeability, relative_permittivity, metal_conductivity));
                     case 'Microstrip'
@@ -159,7 +167,8 @@ switch desired_output
             otherwise
                 switch transmission_line_type
                     case 'Stripline'
-                        result1 = num2str(StriplineClass.getStriplineGuideWavelength(relative_permittivity, frequency));
+                        %Input frequency should be in GHz
+                        result1 = num2str(StriplineClass.getStriplineGuideWavelength(relative_permittivity, frequency/(10^9)));
                     case 'Coaxial'
                         result1 = num2str(coaxial.getGuideWavelength(frequency, relative_permeability, relative_permittivity));
                     case 'Microstrip'
