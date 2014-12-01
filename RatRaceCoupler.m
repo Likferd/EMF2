@@ -3,9 +3,8 @@ classdef RatRaceCoupler
     
     methods (Access = public, Static)
         % relative_permittivity: F/m
-        % characteristicImpedance: Ohms
-        % substrateThickness: meters       
-        % fabricationType: 'Micro','Strip'
+        % characteristicImpedance: Ohms      
+        % fabricationType: 'Micro','Strip', 'Coax'
         function [widthZ0, widthsqrt2Z0] = getWidth(relative_permittivity, characteristicImpedance, substrateThickness, fabricationType)
             
             S = -1i/sqrt(2)*[0 1 1 0; 1 0 0 -1; 1 0 0 1 ; 0 -1 1 0];
@@ -41,7 +40,7 @@ classdef RatRaceCoupler
                 case 'Strip'
                     propConst = StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency);
                 case 'Coax'
-                    propConst = 
+                    propConst = coaxial.getPropagationConstant(frequency, relative_permeability, relative_permittivity, conductivity);
                 
             end
         end
