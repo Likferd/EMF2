@@ -54,6 +54,7 @@ classdef StriplineClass
             %frequency in GHz
             %permeability is mu_0*relative_permeability
             surface_resistance = StriplineClass.getLength(Beta,phi)/ (conductivity *  conductorThickness * StriplineClass.getStriplineWidth(relative_permittivity, characteristicImpedance, substrateThickness) );
+
         end
 
         function [gamma, beta] = getStriplinePropagationConstant(relative_permittivity, frequency, conductivity, characteristicImpedance, substrateThickness, permeability, conductorThickness)

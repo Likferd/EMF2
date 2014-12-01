@@ -39,15 +39,15 @@ end
      end
      
      %Impedance
-     function [lineImpedance] = getImpedance(characteristicImpedance, substrateThickness, relative_permittivity)
-        a = coaxial.calculateWidth(substrateThickness,relative_permittivity, characteristicImpedance);
+     function [lineImpedance] = getImpedance(characteristicImpedance, substrateThickness, relative_permeability, relative_permittivity)
+        a = coaxial.calculateWidth(substrateThickness,relative_permittivity, relative_permeability, characteristicImpedance);
         b = substrateThickness - a;
         lineImpedance = characteristicImpedance*log(b/a)/(sqrt(relative_permittivity)*2*pi);
      end
      
      %Reference microwaves101.com/encyclopedias/coax
-     function [width] = calculateWidth(substrateThickness,relative_permittivity, characteristicImpedance)
-        width = substrateThickness/(10^(characteristicImpedance*sqrt(relative_permittivity)/138)+(1/2));
+     function [width] = calculateWidth(substrateThickness,relative_permittivity, relative_permeability, characteristicImpedance)
+        width = substrateThickness/(10^(characteristicImpedance*sqrt(relative_permittivity)/138)+(1/2))
      end
      
         
