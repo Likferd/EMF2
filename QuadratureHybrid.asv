@@ -62,7 +62,7 @@ classdef QuadratureHybrid
                     %Calc surface resistance
                     propConst = StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency/(10^9), conductivity, characteristicImpedance, substrateThickness*100, QuadratureHybrid.mu_0*relative_permeability, conductorThickness*100);
                 case 'Coax'
-                    propConst = coaxial.getPropagationConstant(frequency, relative_permeability, relative_permittivity, conductivity, characteristicImpedance, substrateThickness);
+                    propConst = coaxial.getPropagationConstant(frequency, relative_permeability, relative_permittivity, conductivity, characteristicImpedance, substrateTh);
             end
         end
         

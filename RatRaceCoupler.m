@@ -43,7 +43,7 @@ classdef RatRaceCoupler
 
 
                 case 'Coax'
-                    propConst = coaxial.getPropagationConstant(frequency, relative_permeability, relative_permittivity, conductivity);
+                    propConst = coaxial.getPropagationConstant(frequency, relative_permeability, relative_permittivity, conductivity, characteristicImpedance, substrateThickness);
                 
             end
         end
