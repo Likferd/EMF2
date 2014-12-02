@@ -24,25 +24,34 @@ end
      %Length
      
      %Guide Wavelength
-     function [w, beta] = getGuideWavelength(frequency, relative_permeability, relative_permittivity)
-         beta = sqrt(relative_permittivity)*2*pi*frequency/(3*10^8);
+     function [guidewavelength, beta] = getGuideWavelength(frequency, relative_permeability, relative_permittivity)
+         beta = sqrt(relative_permittivity)*2*pi*frequency/(3e8);
+         
          %beta = (2*pi*frequency)*sqrt(coaxial.epsilon_0*relative_permeability*coaxial.mu_0*relative_permittivity);
-         w = 2*pi/beta;
+         guidewavelength = 2*pi/beta;
      end
      
      %Get Length
      %function
      
      %Propagation Constant
-     function [c] = getPropagationConstant(frequency, relative_permeability, relative_permittivity, conductivity)
+     function [gamma] = getPropagationConstant(frequency, relative_permeability, relative_permittivity, conductivity,Z0,substrateThickness)
          %We will have a complex value
-         c = 1i*(2*pi*frequency)*sqrt(coaxial.epsilon_0*relative_permeability*coaxial.mu_0*relative_permittivity)*sqrt(1-1i*(conductivity/(2*pi*frequency*relative_permittivity)));
+         f = frequency/1e9;
+         d = coaxial.calculateWidth(substrateThickness,relative_permittivity, Z0); %inner diameter
+         D = (substrateThickness + (d/2));
+         beta = sqrt(relative_permittivity)*2*pi*frequency/(3e8); betaDB = 20*log10(beta);
+         alpha_c = (11.39/Z0)*sqrt(f)*((1/d) + (1/D));
+         loss_tangent = (2*pi*frequency*imag(relative_permittivity) + conductivity)/(2*pi*frequency*real(relative_permittivity));
+         alpha_d = 90.96*sqrt(relative_permittivity)*f*loss_tangent;
+         gamma = alpha_c + alpha_d + 1*1j*betaDB;
+%          gamma = 10^(gammaDB/20);
      end
      
      %Impedance
      function [lineImpedance] = getImpedance(characteristicImpedance, substrateThickness, relative_permittivity)
         a = coaxial.calculateWidth(substrateThickness,relative_permittivity, characteristicImpedance);
-        b = substrateThickness - a;
+        b = substrateThickness + a;
         lineImpedance = characteristicImpedance*log(b/a)/(sqrt(relative_permittivity)*2*pi);
      end
      
