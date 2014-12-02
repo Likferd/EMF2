@@ -38,7 +38,9 @@ classdef RatRaceCoupler
                 case 'Micro'
                     [propConst, ~, ~, ~] = microstripclass.getPropConstants(relative_permittivity,2*pi*frequency,relative_permeability,conductivity,WDratio_g2(characteristicImpedance, relative_permittivity),characteristicImpedance, substrateThickness);
                 case 'Strip'
-                    propConst = StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency/10^9);
+
+                    propConst = StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency/10^9, conductivity, characteristicImpedance, substrateThickness, mu_0*relative_permeability, conductorThickness);
+
                 case 'Coax'
                     propConst = coaxial.getPropagationConstant(frequency, relative_permeability, relative_permittivity, conductivity);
                 
