@@ -4,7 +4,7 @@ classdef RatRaceCoupler
         % relative_permittivity: F/m
         % characteristicImpedance: Ohms      
         % fabricationType: 'Micro','Strip', 'Coax'
-        function [widthZ0, widthsqrt2Z0] = getWidth(relative_permittivity, characteristicImpedance, substrateThickness, fabricationType)
+        function [widthZ0, widthsqrt2Z0] = getWidth(relative_permittivity, relative_permeability, characteristicImpedance, substrateThickness, fabricationType)
             
             S = -1i/sqrt(2)*[0 1 1 0; 1 0 0 -1; 1 0 0 1 ; 0 -1 1 0];
             
@@ -17,8 +17,8 @@ classdef RatRaceCoupler
                     widthZ0 = StriplineClass.getStriplineWidth(relative_permittivity, impedance, substrateThickness*100);
                     widthsqrt2Z0 = StriplineClass.getStriplineWidth(relative_permittivity, impedance_ring, substrateThickness*100);  
                 case 'Coax'
-                    widthZ0 = coaxial.calculateWidth(substrateThickness, relative_permittivity, relative_permeability, impedance);
-                    widthsqrt2Z0 = coaxial.calculateWidth(substrateThickness, relative_permittivity, relative_permeability, impedance_ring);   
+                    widthZ0 = coaxial.calculateWidth(substrateThickness, relative_permittivity, impedance);
+                    widthsqrt2Z0 = coaxial.calculateWidth(substrateThickness, relative_permittivity, impedance_ring);   
             end
         end
         

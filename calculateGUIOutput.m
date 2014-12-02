@@ -32,11 +32,11 @@ switch desired_output
             case 'Rat-Race'
                 switch transmission_line_type
                     case 'Stripline'
-                        [widthZ0, widthsqrt2Z0] = RatRaceCoupler.getWidth(relative_permittivity, characteristic_impedance, substrate_thickness, 'Strip');
+                        [widthZ0, widthsqrt2Z0] = RatRaceCoupler.getWidth(relative_permittivity, relative_permeability, characteristic_impedance, substrate_thickness, 'Strip');
                     case 'Coaxial'
-                        [widthZ0, widthsqrt2Z0] = RatRaceCoupler.getWidth(relative_permittivity, characteristic_impedance, substrate_thickness, 'Coax');
+                        [widthZ0, widthsqrt2Z0] = RatRaceCoupler.getWidth(relative_permittivity, relative_permeability, characteristic_impedance, substrate_thickness, 'Coax');
                     case 'Microstrip'
-                        [widthZ0, widthsqrt2Z0] = RatRaceCoupler.getWidth(relative_permittivity, characteristic_impedance, substrate_thickness, 'Micro');
+                        [widthZ0, widthsqrt2Z0] = RatRaceCoupler.getWidth(relative_permittivity, relative_permeability, characteristic_impedance, substrate_thickness, 'Micro');
                 end
                 result1 = num2str(widthZ0); result2 = num2str(widthsqrt2Z0); result3 = ''; result4 = '';
             otherwise
@@ -185,11 +185,11 @@ switch desired_output
             case 'Rat-Race'
                 switch transmission_line_type
                     case 'Stripline'
-                        [lambda] = RatRaceCoupler.getGuideWavelength(relative_permittivity,relative_permeability,frequency,fabrication_type);
+                        [lambda] = RatRaceCoupler.getGuideWavelength(relative_permittivity,relative_permeability,frequency,'Strip');
                     case 'Coaxial'
-                        [lambda] = RatRaceCoupler.getGuideWavelength(relative_permittivity,relative_permeability,frequency,fabrication_type);
+                        [lambda] = RatRaceCoupler.getGuideWavelength(relative_permittivity,relative_permeability,frequency,'Coax');
                     case 'Microstrip'
-                        [lambda] = RatRaceCoupler.getGuideWavelength(relative_permittivity,relative_permeability,frequency,fabrication_type);
+                        [lambda] = RatRaceCoupler.getGuideWavelength(relative_permittivity,relative_permeability,frequency,'Micro');
                 end
                 result1 = num2str(lambda); result2 = ''; result3 = ''; result4 = '';
             otherwise
