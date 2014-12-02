@@ -30,8 +30,15 @@ switch desired_output
                 end
                 result1 = num2str(width_in); result2 = num2str(width1); result3 = num2str(width2); result4 = '';
             case 'Rat-Race'
-                %TODO
-                result1 = 'TODO'; result2 = ''; result3 = ''; result4 = '';
+                switch transmission_line_type
+                    case 'Stripline'
+                        [widthZ0, widthsqrt2Z0] = RatRaceCoupler.getWidth(relative_permittivity, characteristic_impedance, substrate_thickness, 'Strip');
+                    case 'Coaxial'
+                        [widthZ0, widthsqrt2Z0] = RatRaceCoupler.getWidth(relative_permittivity, characteristic_impedance, substrate_thickness, 'Coax');
+                    case 'Microstrip'
+                        [widthZ0, widthsqrt2Z0] = RatRaceCoupler.getWidth(relative_permittivity, characteristic_impedance, substrate_thickness, 'Micro');
+                end
+                result1 = num2str(widthZ0); result2 = num2str(widthsqrt2Z0); result3 = ''; result4 = '';
             otherwise
                 switch transmission_line_type
                     case 'Stripline'
@@ -72,14 +79,21 @@ switch desired_output
                 end
                 result1 = num2str(length); result2 = ''; result3 = ''; result4 = '';
             case 'Rat-Race'
-                %TODO
-                result1 = 'TODO'; result2 = ''; result3 = ''; result4 = '';
+                switch transmission_line_type
+                    case 'Stripline'
+                        [length_lamdafour, length_threelamdafour] = RatRaceCoupler.getLength(relative_permittivity, relative_permeability, frequency, 'Strip');
+                    case 'Coaxial'
+                        [length_lamdafour, length_threelamdafour] = RatRaceCoupler.getLength(relative_permittivity, relative_permeability, frequency, 'Coax');
+                    case 'Microstrip'
+                        [length_lamdafour, length_threelamdafour] = RatRaceCoupler.getLength(relative_permittivity, relative_permeability, frequency, 'Strip');
+                end
+                result1 = num2str(length_lamdafour); result2 = num2str(length_threelamdafour); result3 = ''; result4 = '';
             otherwise
                 switch transmission_line_type
                     case 'Stripline'
                         %The strip line propagation constant function takes frequency in GHz, so convert to GHz by dividing by 10^9
                         %Convert substrate thickness to cm by multiplying by 100
-                        [~, beta] = StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency/(10^9), metal_conductivity, characteristic_impedance, substrate_thickness*100, phase_shift, metal_thickness*100);
+                        [~, beta] = StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency/(10^9), metal_conductivity, characteristic_impedance, substrate_thickness*100, mu_0*relative_permeability, metal_thickness*100);
                         result1 = num2str(StriplineClass.getLength(beta,phase_shift));
                         result2 = ''; result3 = ''; result4 = '';
                     case 'Coaxial'
@@ -101,8 +115,8 @@ switch desired_output
                 [impedance_in, impedance01, impedance02] = QuadratureHybrid.calculateImpedance(coupling_ratio, characteristic_impedance);
                 result1 = num2str(impedance_in); result2 = num2str(impedance01); result3 = num2str(impedance02); result4 = ''; result5 = '';
             case 'Rat-Race'
-                %TODO
-                result1 = 'TODO'; result2 = ''; result3 = ''; result4 = ''; result5 = '';
+                [impedance, impedance_ring] = RatRaceCoupler.getImpedance(characteristic_impedance);
+                result1 = num2str(impedance); result2 = num2str(impedance_ring); result3 = ''; result4 = ''; result5 = '';
             otherwise
                 switch transmission_line_type
                     case 'Stripline'
@@ -128,8 +142,15 @@ switch desired_output
                 end
                 result1 = num2str(propConst); result2 = ''; result3 = ''; result4 = '';
             case 'Rat-Race'
-                %TODO
-                result1 = 'TODO'; result2 = ''; result3 = ''; result4 = '';
+                switch transmission_line_type
+                    case 'Stripline'
+                        result1 = num2str(RatRaceCoupler.getPropagationConstant(metal_conductivity, relative_permittivity, relative_permeability, frequency, 'Strip', characteristic_impedance, substrate_thickness));
+                    case 'Coaxial'
+                        result1 = num2str(RatRaceCoupler.getPropagationConstant(metal_conductivity, relative_permittivity, relative_permeability, frequency, 'Coax', characteristic_impedance, substrate_thickness));
+                    case 'Microstrip'
+                        result1 = num2str(RatRaceCoupler.getPropagationConstant(metal_conductivity, relative_permittivity, relative_permeability, frequency, 'Micro', characteristic_impedance, substrate_thickness));
+                end
+                result2 = ''; result3 = ''; result4 = '';
             %case 'Quarter-Wave'
                 %TODO: NEED LOAD IMPEDANCE
                 %result1 = num2str(getTheta_m(Gamma_m, characteristic_impedance,ZL,frequency));
@@ -139,7 +160,7 @@ switch desired_output
                         %Input frequency should be in GHz
                         %Input substrate thickness should be in cm
                         %Input metal thickness should be in cm
-                        result1 = num2str(StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency/(10^9), metal_conductivity, characteristic_impedance, substrate_thickness*100, phase_shift, metal_thickness*100));
+                        result1 = num2str(StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency/(10^9), metal_conductivity, characteristic_impedance, substrate_thickness*100, mu_0*relative_permeability, metal_thickness*100));
                     case 'Coaxial'
                         result1 = num2str(coaxial.getPropagationConstant(frequency, relative_permeability, relative_permittivity, metal_conductivity));
                     case 'Microstrip'
@@ -162,8 +183,15 @@ switch desired_output
                 end
                 result1 = num2str(guideWavelength); result2 = ''; result3 = ''; result4 = '';
             case 'Rat-Race'
-                %TODO
-                result1 = 'TODO'; result2 = ''; result3 = ''; result4 = '';
+                switch transmission_line_type
+                    case 'Stripline'
+                        [lambda] = RatRaceCoupler.getGuideWavelength(relative_permittivity,relative_permeability,frequency,fabrication_type);
+                    case 'Coaxial'
+                        [lambda] = RatRaceCoupler.getGuideWavelength(relative_permittivity,relative_permeability,frequency,fabrication_type);
+                    case 'Microstrip'
+                        [lambda] = RatRaceCoupler.getGuideWavelength(relative_permittivity,relative_permeability,frequency,fabrication_type);
+                end
+                result1 = num2str(lambda); result2 = ''; result3 = ''; result4 = '';
             otherwise
                 switch transmission_line_type
                     case 'Stripline'
