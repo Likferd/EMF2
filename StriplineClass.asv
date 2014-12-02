@@ -71,7 +71,7 @@ classdef StriplineClass
             beta = sqrt(relative_permittivity) * (2 * pi * frequency) / (3*10^8);            
             
             % attenuation alpha, Np/m
-            alpha = StriplineClass.getDielectricAttenuation(frequency, relative_permittivity, conductivity) + StriplineClass.getConductorAttenuation(relative_permittivity, StriplineClass.getSurfaceResistance(conductivity, frequency, permeability), substrateThickness, conductorThickness, characteristicImpedance);
+            alpha = StriplineClass.getDielectricAttenuation(frequency, relative_permittivity, conductivity) + StriplineClass.getConductorAttenuation(relative_permittivity, getSurfaceResistance(conductivity, frequency, permeability), substrateThickness, conductorThickness, characteristicImpedance);
             
             % attenuation alpha, dB/m
             alpha_dB = 20 * log10(exp(alpha));
