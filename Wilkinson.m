@@ -33,8 +33,8 @@ classdef Wilkinson
                   Z12 = Z0*sqrt(2);
                   Z13 = Z0*sqrt(2);
                   R = 2*Z0;
-                  R2 = 50;
-                  R3 = 50;
+                  R2 = Z0;
+                  R3 = Z0;
               case 0 
                   K = 10^(sqrt(couplingratio)/10);
                   Z13 = Z0*sqrt((1+K^2)/K^3);
