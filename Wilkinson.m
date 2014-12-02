@@ -57,27 +57,27 @@ classdef Wilkinson
                     B2 = (377*pi)/(2*Z12*sqrt(er));
                     Wdratio2 = (2/pi)*(B2 - 1 - log(2*B2 -1) + ((er-1)/(2*er))*(log(B2-1)+.39-(.61/er)));
                     width12 = Wdratio2*substratethickness;
-                    effectivewidth12 = [];
+                    effectivewidth12 = width12;
                 end
         
                 if greater_than_2_12 ==0
                     A2 = Z12/60 * sqrt((er+1)/2) + ((er-1)/(er+1))*(.23+(.11/er));
                     Wdratio2 = 8*exp(A2) / (exp(2*A2)-2);
                     width12 = Wdratio2*substratethickness;
-                    effectivewidth12 = [];
+                    effectivewidth12 = width12;
                 end
                 if greater_than_2_13 ==1
                     B3 = (377*pi)/(2*Z13*sqrt(er));
                     Wdratio3 = (2/pi)*(B3 - 1 - log(2*B3 -1) + ((er-1)/(2*er))*(log(B3-1)+.39-(.61/er)));
                     width13 = Wdratio3*substratethickness;
-                    effectivewidth13 = [];
+                    effectivewidth13 = width13;
                 end
         
                 if greater_than_2_13 ==0
                     A3 = Z13/60 * sqrt((er+1)/2) + ((er-1)/(er+1))*(.23+(.11/er));
                     Wdratio3 = 8*exp(A3) / (exp(2*A3)-2);
                     width13 = Wdratio3*substratethickness;
-                    effectivewidth13 = [];
+                    effectivewidth13 = width13;
                 end 
                 
             case 'Strip'
@@ -106,6 +106,13 @@ classdef Wilkinson
                     
                     effectivewidth13 = ((width13/substratethickness) - (.35 - width13/substratethickness)^2)*substratethickness;
                 end
+                
+            case 'Coax'
+                width12 = coaxial.calculateWidth(substratethickness,er,Z12);
+                width13 = coaxial.calculateWidth(substratethickness,er,Z13);
+                effectivewidth12 = width12;
+                effectivewidth13 = width13;
+                
         end
       end
 
