@@ -22,7 +22,7 @@ function varargout = GUI(varargin)
 
 % Edit the above text to modify the response to help GUI
 
-% Last Modified by GUIDE v2.5 30-Nov-2014 13:34:10
+% Last Modified by GUIDE v2.5 01-Dec-2014 22:25:01
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -72,9 +72,11 @@ set(handles.text11, 'Visible', 'off');
 set(handles.text19, 'Visible', 'off');
 set(handles.text21, 'Visible', 'off');
 set(handles.text20, 'Visible', 'off');
+set(handles.text23, 'Visible', 'off');
 set(handles.edit8, 'Visible', 'off');
 set(handles.edit10, 'Visible', 'off');
 set(handles.edit9, 'Visible', 'off');
+set(handles.edit12, 'Visible', 'off');
 set(handles.pushbutton4, 'Visible', 'off');
 set(handles.edit1, 'Visible', 'off');
 set(handles.edit2, 'Visible', 'off');
@@ -218,6 +220,10 @@ switch get(hObject, 'Value')
         handles.desired_output = 'Impedance';
     case 4
         handles.desired_output = 'Propagation Constant';
+        if(strcmp(handles.circuit_type,'Quarter-Wave'))
+            set(handles.edit12, 'Visible', 'on');
+            set(handles.text23, 'Visible', 'on');
+        end
     case 5
         handles.desired_output = 'Guide Wavelength';
 end
@@ -281,9 +287,11 @@ set(handles.text11, 'Visible', 'off');
 set(handles.text19, 'Visible', 'off');
 set(handles.text21, 'Visible', 'off');
 set(handles.text20, 'Visible', 'off');
+set(handles.text23, 'Visible', 'off');
 set(handles.edit8, 'Visible', 'off');
 set(handles.edit10, 'Visible', 'off');
 set(handles.edit9, 'Visible', 'off');
+set(handles.edit12, 'Visible', 'off');
 set(handles.pushbutton4, 'Visible', 'off');
 set(handles.pushbutton4, 'Enable', 'on');
 set(handles.edit1, 'Visible', 'off');
@@ -530,11 +538,21 @@ catch
     handles.input.relative_permeability = 0;
     
 end
+load_impedance = get(handles.edit12, 'String');
+if(strcmp(handles.circuit_type,'Quarter-Wave'))
+    try
+        handles.input.load_impedance = str2double(load_impedance);
+    catch
+        handles.input.load_impedance = 0;
+    end
+else
+    handles.input.load_impedance = 0;
+end
 set(hObject, 'Enable', 'off');
 drawnow();
 %Calculate Output
 handles.transmission_line_type;
-[result1, result2, result3, result4, result5] = calculateGUIOutput(handles.desired_output, handles.transmission_line_type, handles.circuit_type, handles.input.characteristic_impedance, handles.input.substrate_thickness, handles.input.metal_thickness, handles.input.metal_conductivity, handles.input.relative_permittivity, handles.input.relative_permeability, handles.input.frequency, handles.input.coupling_ratio, handles.input.phase_shift);
+[result1, result2, result3, result4, result5] = calculateGUIOutput(handles.desired_output, handles.transmission_line_type, handles.circuit_type, handles.input.characteristic_impedance, handles.input.substrate_thickness, handles.input.metal_thickness, handles.input.metal_conductivity, handles.input.relative_permittivity, handles.input.relative_permeability, handles.input.frequency, handles.input.coupling_ratio, handles.input.phase_shift, handles.input.load_impedance);
 
 %Set Result 1
 set(handles.text14,'String', result1);
@@ -621,6 +639,52 @@ function edit10_Callback(hObject, eventdata, handles)
 % --- Executes during object creation, after setting all properties.
 function edit10_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to edit10 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit11_Callback(hObject, eventdata, handles)
+% hObject    handle to edit11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit11 as text
+%        str2double(get(hObject,'String')) returns contents of edit11 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit11_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit12_Callback(hObject, eventdata, handles)
+% hObject    handle to edit12 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit12 as text
+%        str2double(get(hObject,'String')) returns contents of edit12 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit12_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit12 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 

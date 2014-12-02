@@ -86,5 +86,9 @@ end
         s = V0*log(b./r)./log(b./a);
     end
     
+    function [length] = getLength(frequency, relative_permeability, relative_permittivity)
+        length = coaxial.getGuideWavelength(frequency, relative_permeability, relative_permittivity)/4;
+    end
+    
  end
 end

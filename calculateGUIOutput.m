@@ -1,4 +1,4 @@
-function [ result1, result2, result3, result4, result5 ] = calculateGUIOutput( desired_output, transmission_line_type, circuit_type, characteristic_impedance, substrate_thickness, metal_thickness, metal_conductivity, relative_permittivity, relative_permeability, frequency, coupling_ratio, phase_shift )
+function [ result1, result2, result3, result4, result5 ] = calculateGUIOutput( desired_output, transmission_line_type, circuit_type, characteristic_impedance, substrate_thickness, metal_thickness, metal_conductivity, relative_permittivity, relative_permeability, frequency, coupling_ratio, phase_shift, load_impedance )
 epsilon_0 = 8.85418782*10-12;
 mu_0 = 1.25663706*10-6;
 
@@ -59,7 +59,7 @@ switch desired_output
                 switch transmission_line_type
                     case 'Stripline'
                         %The stripline guide wavelength function takes frequency in GHz, so we need to convert our frequency in Hz to GHz by dividing by 10^9
-                        lambda = StriplineClass.getStriplineGuideWavelength(relative_permittivity, frequency/(10^9));
+                        lambda = 0.01*StriplineClass.getStriplineGuideWavelength(relative_permittivity, frequency/(10^9));
                     case 'Coaxial'
                         lambda = coaxial.getGuideWavelength(frequency, relative_permeability, relative_permittivity);
                     case 'Microstrip'
@@ -94,11 +94,11 @@ switch desired_output
                         %The strip line propagation constant function takes frequency in GHz, so convert to GHz by dividing by 10^9
                         %Convert substrate thickness to cm by multiplying by 100
                         [~, beta] = StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency/(10^9), metal_conductivity, characteristic_impedance, substrate_thickness*100, mu_0*relative_permeability, metal_thickness*100);
-                        result1 = strcat('length = ', num2str(StriplineClass.getLength(beta,phase_shift)), ' m');
+                        result1 = strcat('length = ', num2str(0.01*StriplineClass.getLength(beta,phase_shift)), ' m');
                         result2 = ''; result3 = ''; result4 = '';
                     case 'Coaxial'
-                        %TODO
-                        result1 = 'TODO'; result2 = ''; result3 = ''; result4 = '';
+                        result1 = strcat('length = ',num2str(coaxial.getLength(frequency, relative_permeability, relative_permittivity)), ' m');
+                        result2 = ''; result3 = ''; result4 = '';
                     case 'Microstrip'
                         [beta, ~] = microstripclass.getBeta(relative_permittivity,2*pi*frequency,WDratio_g2(characteristic_impedance, relative_permittivity));
                         result1 = strcat('length = ',num2str(microstripclass.getLength(beta,phase_shift)), ' m');
@@ -151,9 +151,23 @@ switch desired_output
                         result1 = strcat('propagation constant = ', num2str(RatRaceCoupler.getPropagationConstant(metal_conductivity, relative_permittivity, relative_permeability, frequency, 'Micro', characteristic_impedance, substrate_thickness, metal_thickness)));
                 end
                 result2 = ''; result3 = ''; result4 = '';
-            %case 'Quarter-Wave'
-                %TODO: NEED LOAD IMPEDANCE
-                %result1 = num2str(getTheta_m(Gamma_m, characteristic_impedance,ZL,frequency));
+           case 'Quarter-Wave'
+                switch transmission_line_type
+                    case 'Stripline'
+                        %Input frequency should be in GHz
+                        guideWavelength = num2str(0.01*StriplineClass.getStriplineGuideWavelength(relative_permittivity, frequency/(10^9)));
+                    case 'Coaxial'
+                        guideWavelength = num2str(coaxial.getGuideWavelength(frequency, relative_permeability, relative_permittivity));
+                    case 'Microstrip'
+                        [~,~,~,beta] = microstripclass.getPropConstants(relative_permittivity,2*pi*frequency,mu_0*relative_permeability,metal_conductivity,WDratio_g2(characteristic_impedance,relative_permittivity),characteristic_impedance,substrate_thickness);
+                        guideWavelength = num2str(microstripclass.getGuideWavelength(beta));
+                    otherwise
+                        guideWavelength = 0;
+                end
+                Z1 = num2str(QuarterWaveStub.getZ1(characteristic_impedance,load_impedance));
+                result1 = strcat('Z1 = ',Z1,' ohms');
+                BetaL = QuarterWaveStub.getBetaL(frequency,guideWavelength);
+                result2 = strcat('Zin = ',QuarterWaveStub.getZin(BetaL,Z1,load_impedance), ' ohms');
             otherwise
                 switch transmission_line_type
                     case 'Stripline'
@@ -196,7 +210,7 @@ switch desired_output
                 switch transmission_line_type
                     case 'Stripline'
                         %Input frequency should be in GHz
-                        result1 = strcat('lambda = ',num2str(StriplineClass.getStriplineGuideWavelength(relative_permittivity, frequency/(10^9))), ' m');
+                        result1 = strcat('lambda = ',num2str(0.01*StriplineClass.getStriplineGuideWavelength(relative_permittivity, frequency/(10^9))), ' m');
                     case 'Coaxial'
                         result1 = strcat('lambda = ',num2str(coaxial.getGuideWavelength(frequency, relative_permeability, relative_permittivity)), ' m');
                     case 'Microstrip'
