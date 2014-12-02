@@ -18,7 +18,7 @@ classdef QuarterWaveStub
         
         function [BL] = getBetaL(f0,guidewavelength)
             lambda0 = 3e8/f0;
-            BL = (2*pi/guidewavelength)*(lambda0/4);
+            BL = 2*pi*lambda0*(4*guidewavelength)^(-1);
         end
         
         function [Gamma] = getGamma(Zin,Z0)

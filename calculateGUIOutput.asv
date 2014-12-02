@@ -160,16 +160,14 @@ switch desired_output
                         guideWavelength = coaxial.getGuideWavelength(frequency, relative_permeability, relative_permittivity);
                     case 'Microstrip'
                         [~,~,~,beta] = microstripclass.getPropConstants(relative_permittivity,2*pi*frequency,mu_0*relative_permeability,metal_conductivity,WDratio_g2(characteristic_impedance,relative_permittivity),characteristic_impedance,substrate_thickness);
-                        guideWavelength = microstripclass.getGuideWavelength(beta);
+                        guideWavelength = microstripclass.getGuideWavelength(beta));
                     otherwise
                         guideWavelength = 0;
                 end
-                Z1 = QuarterWaveStub.getZ1(characteristic_impedance,load_impedance);
-                result1 = strcat('Z1 = ',num2str(Z1),' ohms');
+                Z1 = num2str(QuarterWaveStub.getZ1(characteristic_impedance,load_impedance));
+                result1 = strcat('Z1 = ',Z1,' ohms');
                 BetaL = QuarterWaveStub.getBetaL(frequency,guideWavelength);
-                result2 = strcat('Zin = ',num2str(QuarterWaveStub.getZin(BetaL,Z1,load_impedance)), ' ohms');
-                result3 = '';
-                result4 = '';
+                result2 = strcat('Zin = ',QuarterWaveStub.getZin(BetaL,Z1,load_impedance), ' ohms');
             otherwise
                 switch transmission_line_type
                     case 'Stripline'
