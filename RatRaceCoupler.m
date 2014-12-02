@@ -1,11 +1,10 @@
 % Rat race coupler
 classdef RatRaceCoupler
-    
     methods (Access = public, Static)
         % relative_permittivity: F/m
         % characteristicImpedance: Ohms      
         % fabricationType: 'Micro','Strip', 'Coax'
-        function [widthZ0, widthsqrt2Z0] = getWidth(relative_permittivity, characteristicImpedance, substrateThickness, fabricationType)
+        function [widthZ0, widthsqrt2Z0] = getWidth(relative_permittivity, relative_permeability, characteristicImpedance, substrateThickness, fabricationType)
             
             S = -1i/sqrt(2)*[0 1 1 0; 1 0 0 -1; 1 0 0 1 ; 0 -1 1 0];
             
@@ -18,8 +17,8 @@ classdef RatRaceCoupler
                     widthZ0 = StriplineClass.getStriplineWidth(relative_permittivity, impedance, substrateThickness*100);
                     widthsqrt2Z0 = StriplineClass.getStriplineWidth(relative_permittivity, impedance_ring, substrateThickness*100);  
                 case 'Coax'
-                    widthZ0 = coaxial.calculateWidth(substrateThickness, relative_permittivity, relative_permeability, impedance);
-                    widthsqrt2Z0 = coaxial.calculateWidth(substrateThickness, relative_permittivity, relative_permeability, impedance_ring);   
+                    widthZ0 = coaxial.calculateWidth(substrateThickness, relative_permittivity, impedance);
+                    widthsqrt2Z0 = coaxial.calculateWidth(substrateThickness, relative_permittivity, impedance_ring);   
             end
         end
         
@@ -33,13 +32,15 @@ classdef RatRaceCoupler
             impedance_ring = characteristicImpedance*sqrt(2);           
         end
         
-        function [propConst] = getPropagationConstant(conductivity, relative_permittivity, relative_permeability, frequency, fabricationType, characteristicImpedance, substrateThickness)
+        function [propConst] = getPropagationConstant(conductivity, relative_permittivity, relative_permeability, frequency, fabricationType, characteristicImpedance, substrateThickness, conductorThickness)
             switch fabricationType
                 case 'Micro'
                     [propConst, ~, ~, ~] = microstripclass.getPropConstants(relative_permittivity,2*pi*frequency,relative_permeability,conductivity,WDratio_g2(characteristicImpedance, relative_permittivity),characteristicImpedance, substrateThickness);
                 case 'Strip'
 
+                    mu_0 = 1.25663706*10-6;
                     propConst = StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency/10^9, conductivity, characteristicImpedance, substrateThickness*100, mu_0*relative_permeability, conductorThickness*1000);
+
 
                 case 'Coax'
                     propConst = coaxial.getPropagationConstant(frequency, relative_permeability, relative_permittivity, conductivity);
