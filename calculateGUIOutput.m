@@ -144,11 +144,11 @@ switch desired_output
             case 'Rat-Race'
                 switch transmission_line_type
                     case 'Stripline'
-                        result1 = num2str(RatRaceCoupler.getPropagationConstant(metal_conductivity, relative_permittivity, relative_permeability, frequency, 'Strip', characteristic_impedance, substrate_thickness));
+                        result1 = num2str(RatRaceCoupler.getPropagationConstant(metal_conductivity, relative_permittivity, relative_permeability, frequency, 'Strip', characteristic_impedance, substrate_thickness, metal_thickness));
                     case 'Coaxial'
-                        result1 = num2str(RatRaceCoupler.getPropagationConstant(metal_conductivity, relative_permittivity, relative_permeability, frequency, 'Coax', characteristic_impedance, substrate_thickness));
+                        result1 = num2str(RatRaceCoupler.getPropagationConstant(metal_conductivity, relative_permittivity, relative_permeability, frequency, 'Coax', characteristic_impedance, substrate_thickness, metal_thickness));
                     case 'Microstrip'
-                        result1 = num2str(RatRaceCoupler.getPropagationConstant(metal_conductivity, relative_permittivity, relative_permeability, frequency, 'Micro', characteristic_impedance, substrate_thickness));
+                        result1 = num2str(RatRaceCoupler.getPropagationConstant(metal_conductivity, relative_permittivity, relative_permeability, frequency, 'Micro', characteristic_impedance, substrate_thickness, metal_thickness));
                 end
                 result2 = ''; result3 = ''; result4 = '';
             %case 'Quarter-Wave'

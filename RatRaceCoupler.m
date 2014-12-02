@@ -1,9 +1,5 @@
 % Rat race coupler
 classdef RatRaceCoupler
-    properties (Access = private, Constant)
-        epsilon_0 = 8.85418782*10-12;
-        mu_0 = 1.25663706*10-6;
-    end
     methods (Access = public, Static)
         % relative_permittivity: F/m
         % characteristicImpedance: Ohms      
@@ -36,13 +32,13 @@ classdef RatRaceCoupler
             impedance_ring = characteristicImpedance*sqrt(2);           
         end
         
-        function [propConst] = getPropagationConstant(conductivity, relative_permittivity, relative_permeability, frequency, fabricationType, characteristicImpedance, substrateThickness)
+        function [propConst] = getPropagationConstant(conductivity, relative_permittivity, relative_permeability, frequency, fabricationType, characteristicImpedance, substrateThickness, conductorThickness)
             switch fabricationType
                 case 'Micro'
                     [propConst, ~, ~, ~] = microstripclass.getPropConstants(relative_permittivity,2*pi*frequency,relative_permeability,conductivity,WDratio_g2(characteristicImpedance, relative_permittivity),characteristicImpedance, substrateThickness);
                 case 'Strip'
-
-                    propConst = StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency/10^9, conductivity, characteristicImpedance, substrateThickness, RatRaceCoupler.mu_0*relative_permeability, conductorThickness);
+                    mu_0 = 1.25663706*10-6;
+                    propConst = StriplineClass.getStriplinePropagationConstant(relative_permittivity, frequency/10^9, conductivity, characteristicImpedance, substrateThickness, mu_0*relative_permeability, conductorThickness);
 
                 case 'Coax'
                     propConst = coaxial.getPropagationConstant(frequency, relative_permeability, relative_permittivity, conductivity);
