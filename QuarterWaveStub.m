@@ -4,11 +4,16 @@ classdef QuarterWaveStub
     methods (Access = public,Static)
         
         function [Z1] = getZ1(Z0,ZL)
-            Z1 = sqrt(Z0*ZL);
+            %Z0 is characteristic impedence of the transmission line
+            %Z1 is the characteristic impedence of the stub
+            %ZL is load impedence
+            Z1 = sqrt(Z0*ZL); 
         end
         
-        function [Zin] = getZin(Beta,l,Z1,ZL)
-            Zin = Z1*((ZL + 1*1j*Z1*tan(Beta*l))/(Z1 + 1*1j*ZL*tan(Beta*l)));
+        function [Zin] = getZin(BetaL,Z1,ZL)
+            %Zin is the impedence looking into the stub
+            %see figure 2.16 in the Pozar
+            Zin = Z1*((ZL + 1*1j*Z1*tan(BetaL))/(Z1 + 1*1j*ZL*tan(BetaL)));
         end
         
         function [BL] = getBetaL(f0,guidewavelength)
@@ -17,10 +22,12 @@ classdef QuarterWaveStub
         end
         
         function [Gamma] = getGamma(Zin,Z0)
+            %reflection coefficient
             Gamma = (Zin - Z0)/(Zin + Z0);
         end
         
         function [SWR] = getSWR(Gamma)
+            %standing wave ratio
             SWR = (1+abs(Gamma))/(1 - abs(Gamma));
         end
         
