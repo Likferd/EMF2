@@ -14,8 +14,8 @@ classdef RatRaceCoupler
                     widthZ0 = substrateThickness*WDratio_g2(impedance, relative_permittivity);
                     widthsqrt2Z0 = substrateThickness*WDratio_g2(impedance_ring, relative_permittivity);                    
                 case 'Strip'                    
-                    widthZ0 = StriplineClass.getStriplineWidth(relative_permittivity, impedance, substrateThickness*100);
-                    widthsqrt2Z0 = StriplineClass.getStriplineWidth(relative_permittivity, impedance_ring, substrateThickness*100);  
+                    widthZ0 = 0.01*StriplineClass.getStriplineWidth(relative_permittivity, impedance, substrateThickness*100);
+                    widthsqrt2Z0 = 0.01*StriplineClass.getStriplineWidth(relative_permittivity, impedance_ring, substrateThickness*100);  
                 case 'Coax'
                     widthZ0 = coaxial.calculateWidth(substrateThickness, relative_permittivity, impedance);
                     widthsqrt2Z0 = coaxial.calculateWidth(substrateThickness, relative_permittivity, impedance_ring);   
@@ -55,7 +55,7 @@ classdef RatRaceCoupler
                     lambda_0 = 3*10^8/frequency;
                     lambda = lambda_0/sqrt(relative_permittivity);
                 case 'Strip'
-                    lambda = StriplineClass.getStriplineGuideWavelength(relative_permittivity, frequency/10^9);
+                    lambda = 0.01*StriplineClass.getStriplineGuideWavelength(relative_permittivity, frequency/10^9);
                 case 'Coax'
                     lambda = coaxial.getGuideWavelength(frequency, relative_permeability, relative_permittivity);
             end
