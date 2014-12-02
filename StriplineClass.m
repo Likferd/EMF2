@@ -50,11 +50,17 @@ classdef StriplineClass
         end
         
         %Reference microwaves101.com/encyclopedias/transmission-line-loss
-        function [surface_resistance] = getSurfaceResistance(conductivity, Beta, phi, conductorThickness,relative_permittivity, characteristicImpedance, substrateThickness)
+       % function [surface_resistance] = getSurfaceResistance(conductivity, Beta, phi, conductorThickness,relative_permittivity, characteristicImpedance, substrateThickness)
             %frequency in GHz
             %permeability is mu_0*relative_permeability
-            surface_resistance = StriplineClass.getLength(Beta,phi)/ (conductivity *  conductorThickness * StriplineClass.getStriplineWidth(relative_permittivity, characteristicImpedance, substrateThickness) );
+        %    surface_resistance = StriplineClass.getLength(Beta,phi)/ (conductivity *  conductorThickness * StriplineClass.getStriplineWidth(relative_permittivity, characteristicImpedance, substrateThickness) );
 
+        %end
+        
+        function [surface_resistance] = getSurfaceResistance(conductivity, frequency, permeability)
+            %frequency in GHz
+            %permeability is mu_0*relative_permeability
+            surface_resistance = sqrt(pi*frequency*permeability/conductivity);
         end
 
         function [gamma, beta] = getStriplinePropagationConstant(relative_permittivity, frequency, conductivity, characteristicImpedance, substrateThickness, phi, conductorThickness)
