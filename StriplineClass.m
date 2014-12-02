@@ -63,7 +63,7 @@ classdef StriplineClass
             surface_resistance = sqrt(pi*frequency*permeability/conductivity);
         end
 
-        function [gamma, beta] = getStriplinePropagationConstant(relative_permittivity, frequency, conductivity, characteristicImpedance, substrateThickness, phi, conductorThickness)
+        function [gamma, beta] = getStriplinePropagationConstant(relative_permittivity, frequency, conductivity, characteristicImpedance, substrateThickness, permeability, conductorThickness)
             %input width cm, substrate thickness cm, conductor thickness mm
             %permeability is mu_0*relative_permeability
             
